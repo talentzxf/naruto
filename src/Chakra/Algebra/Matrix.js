@@ -1,4 +1,5 @@
-export class Matrix{
+'use strict'
+class Matrix{
     constructor(inArray){
         // TODO: Validate this array is 2d array
         this.data = inArray;

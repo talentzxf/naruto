@@ -1,1 +1,1 @@
-Matrix = require("Chakra/Math/Algebra/Matrix.js")
+Matrix = require("Chakra/Algebra/Matrix.js")

@@ -1,3 +1,4 @@
-Math = require("Chakra/Exports.js")
-let mat = new Math.Matrix([[1,2],[2,3]])
-mat.toString()
+'use strict'
+Chakra = require("Chakra/Algebra/Matrix.js")
+let mat = new Chakra.Matrix([[1,2],[2,3]])
+console.log( mat.toString() )
