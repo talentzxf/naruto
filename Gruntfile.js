@@ -1,76 +1,42 @@
-var path = require('path');
-var webpack = require('webpack');
+var browserify = require('browserify')
+    , remapify = require('remapify')
 
 module.exports = function (grunt) {
 
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        webpack: {
-            Chakra: {
-                entry: "./src/Chakra/Exports.js",
-                output: {
-                    path: __dirname + "\\dst\\",
-                    filename: "bundle.js"
+        browserify: {
+            dist: {
+                files: {
+                    'dst/ChakraTest.js': ['src/Chakra/**/*.js']
                 },
-                resolve: {
-                    root: path.resolve("./src/"),
-                    extensions: ['', 'js']
-                },
-                module: {
-                    loaders: [
-                        {test: /\.css$/, loader: "style!css"}
-                    ]
-                },
-                plugins: [
-                    new webpack.BannerPlugin('This file is created by VincentZhang. For fun!')
-                    // TODO: Add predefined variables.
-                    // 1. Math validation mode.
-                ]
-            },
-            ChakraTest: {
-                entry: "./src/Chakra/test/test.js",
-                output: {
-                    path: __dirname + "\\dst\\",
-                    filename: "ChakraTest.js"
-                },
-                resolve: {
-                    root: path.resolve("./src/"),
-                    extensions: ['', 'js']
-                },
-                module: {
-                    loaders: [
-                        {test: /\.css$/, loader: "style!css"}
-                    ]
-                },
-                plugins: [
-                    new webpack.BannerPlugin('This file is created by VincentZhang. For fun!')
-                    // TODO: Add predefined variables.
-                    // 1. Math validation mode.
-                ]
+                options: {
+                    transform: ["babelify"]
+                }
             }
         },
         mochaTest: {
             test: {
                 options: {
                     reporter: 'spec',
-                    captureFile: 'results.txt', // Optionally capture the reporter output to a file
+                    captureFile: './dst/results.txt', // Optionally capture the reporter output to a file
                     quiet: false, // Optionally suppress output to standard out (defaults to false)
                     clearRequireCache: false // Optionally clear the require cache before running tests (defaults to false)
                 },
                 src: ['./dst/**/*Test.js']
             }
         },
-        clean:{
+        clean: {
             build: {
                 src: ["./dst"]
             }
         },
-        copy:{
-            main:{
+        copy: {
+            main: {
                 expand: true,
-                src:"src/**/test.js",
-                dest:"dst/"
+                src: "src/**/test.js",
+                dest: "dst/"
             }
         }
     });
@@ -79,8 +45,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-mocha-test');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-browserify');
 
-    // Default task(s).
-    grunt.registerTask('default', ['clean','webpack', 'mochaTest']);
+// Default task(s).
+    grunt.registerTask('default', ['clean', 'browserify', 'mochaTest']);
 
-};
+}
+;

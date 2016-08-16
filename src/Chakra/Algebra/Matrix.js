@@ -7,6 +7,18 @@ class Matrix{
         this.cols = inArray[0].length;
     }
 
+    //constructor(rows, cols){
+    //    this.data = []
+    //    this.rows = rows;
+    //    this.cols = cols;
+    //    for(var r = 0 ; r < rows; r++){
+    //        this.data
+    //        for( var c = 0 ; c < cols; c++){
+    //
+    //        }
+    //    }
+    //}
+
     getEle(r,c){
         return this.data[r][c];
     }
@@ -14,6 +26,22 @@ class Matrix{
     setEle(r,c,v){
         this.data[r][c] = v;
     }
+
+    //add(m){
+    //    if(!m instanceof Matrix)
+    //        assert(m + "is not a matrix!")
+    //
+    //    if(m.getCols() != this.getCols() || m.getRows() != this.getRows()){
+    //        assert("Matrix dimension didn't match!")
+    //    }
+    //
+    //    let m = new Matrix();
+    //    for()
+    //}
+    //
+    //getCols(){
+    //        return
+    //    }
 
     toString(){
         var retStr = "";
@@ -25,4 +53,6 @@ class Matrix{
         }
     }
 }
+
+export {Matrix}
 
