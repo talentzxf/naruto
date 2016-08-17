@@ -3,15 +3,20 @@ class Matrix{
     constructor(){
         if(arguments.length == 1){
             if(arguments[0] instanceof Array){
-                var inArray = arguments[0];
+                var inArray = arguments[0].slice();
                 if(!(inArray[0] instanceof Array)){
-                    assert("Input array not 2d.")
+                    throw "Input array not 2d.";
                 }
-                // TODO: Validate this array is 2d array
-                this.data = inArray;
-                this.rows = inArray.length;
 
+                this.rows = inArray.length;
                 this.cols = inArray[0].length;
+                this.data = [];
+                for(var r = 0 ; r < this.rows; r++){
+                    this.data.push([]);
+                    for( var c = 0 ; c < this.cols; c++){
+                        this.data[r].push(inArray[r][c]);
+                    }
+                }
             }
         }else if(arguments.length == 2){
             this.data = []
@@ -40,15 +45,15 @@ class Matrix{
      */
     add(m){
         if(!m instanceof Matrix)
-            assert(m + "is not a matrix!")
+            throw m + "is not a matrix!"
 
         if(m.rows != this.rows || m.cols != this.cols){
-            assert("Matrix dimension didn't match!")
+            throw "Matrix dimension didn't match!"
         }
 
         let retM = new Matrix(m.rows, m.cols);
         for(var r = 0; r < m.rows; r++){
-            for(var c = 0 ; c < m.rows; c++){
+            for(var c = 0 ; c < m.cols; c++){
                 retM.setEle(r,c, m.getEle(r,c) + this.getEle(r,c))
             }
         }
@@ -100,7 +105,7 @@ class Matrix{
                     return retM;
                 }
                 else{
-                    assert("Matrix dimension not match!Left col:" + this.cols + " right rows:" + m.rows);
+                    throw "Matrix dimension not match!Left col:" + this.cols + " right rows:" + m.rows;
                 }
             }
         }
