@@ -17,5 +17,13 @@ describe('Vector', function() {
         assert.equal(11, v3.getEle(2))
         assert.equal(13, v3.getEle(3))
         assert.equal(15, v3.getEle(4))
+        assert.equal(130, v1.dot(v2))
+
+        let v4 = new Vector([2,3,4]);
+        let v5 = new Vector([9,10,11]);
+        let v6 = v4.cross(v5)
+        assert.equal(-7, v6.getEle(0));
+        assert.equal(14, v6.getEle(1));
+        assert.equal(-7, v6.getEle(2));
     })
 })

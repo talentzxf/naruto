@@ -35,6 +35,41 @@ class Vector extends Matrix{
 
         return super.getEle(idx,0);
     }
+
+    // dot multiply
+    dot(otherVec){
+        if(!(otherVec instanceof Vector)){
+            throw "Param not vector!"
+        }
+
+        if(otherVec.rows != this.rows){
+            throw "Dimension not much!"
+        }
+
+        return this.T().multi(otherVec).data[0][0];
+    }
+
+    // Cross multiply
+    cross(otherVec){
+        if(!(otherVec instanceof Vector)){
+            throw "Param not vector!"
+        }
+
+        if(otherVec.rows != this.rows){
+            throw "Dimension not much!"
+        }
+
+        // I only know the cross product of 3d vector
+        if(this.rows != 3){
+            throw "Only know cross product on 3d vector"
+        }
+
+        return new Vector([
+            this.getEle(1) * otherVec.getEle(2) - this.getEle(2) * otherVec.getEle(1) ,
+            this.getEle(2) * otherVec.getEle(0) - this.getEle(0) * otherVec.getEle(2) ,
+            this.getEle(0) * otherVec.getEle(1) - this.getEle(1) * otherVec.getEle(0)
+        ])
+    }
 }
 
 export {Vector}
