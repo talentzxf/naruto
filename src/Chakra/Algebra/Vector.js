@@ -23,6 +23,14 @@ class Vector extends Matrix{
         return new Vector(super.add(otherVec).data);
     }
 
+    sub(otherVec){
+        if(!(otherVec instanceof Vector)){
+            throw "Vector can only add to another vector";
+        }
+
+        return new Vector(super.sub(otherVec).data);
+    }
+
     getEle(idx){
         if(arguments.length != 1 && arguments.length != 2 ){
             throw "Only 1 argument should be provided, provided:" + arguments.length + ".";
@@ -69,6 +77,15 @@ class Vector extends Matrix{
             this.getEle(2) * otherVec.getEle(0) - this.getEle(0) * otherVec.getEle(2) ,
             this.getEle(0) * otherVec.getEle(1) - this.getEle(1) * otherVec.getEle(0)
         ])
+    }
+
+    // square of norm
+    norm2(){
+        return this.dot(this)
+    }
+
+    norm(){
+        return Math.sqrt(this.norm2())
     }
 }
 

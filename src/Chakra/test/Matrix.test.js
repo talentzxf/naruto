@@ -13,6 +13,13 @@ describe('Matrix', function() {
         });
     });
 
+    describe("#equal", function(){
+        let mat1 = new Matrix([[1,2,3,4],[5,6,7,8]]);
+        let mat2 = new Matrix([[1,2,3,4],[5,6,7,8]]);
+
+        assert.equal(true, mat1.equal(mat2));
+    })
+
     describe('#add', function() {
         it('Matrix addition', function() {
             let mat1 = new Matrix([[1,2],[2,3]])

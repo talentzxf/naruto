@@ -31,6 +31,26 @@ class Matrix{
         }
     }
 
+    equal(other){
+        if(!(other instanceof Matrix)){
+            throw "Matrix can only compare to another Matrix";
+        }
+
+        if( (this.rows != other.rows ) || (this.cols != other.cols)){
+            return false;
+        }
+
+        for(var r = 0; r < this.rows; r++){
+            for( var c = 0 ; c < this.cols; c++){
+                if(this.getEle(r,c) != other.getEle(r,c)){
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     getEle(r,c){
         return this.data[r][c];
     }
@@ -55,6 +75,23 @@ class Matrix{
         for(var r = 0; r < m.rows; r++){
             for(var c = 0 ; c < m.cols; c++){
                 retM.setEle(r,c, m.getEle(r,c) + this.getEle(r,c))
+            }
+        }
+        return retM;
+    }
+
+    sub(m){
+        if(!m instanceof Matrix)
+            throw m + "is not a matrix!"
+
+        if(m.rows != this.rows || m.cols != this.cols){
+            throw "Matrix dimension didn't match!"
+        }
+
+        let retM = new Matrix(m.rows, m.cols);
+        for(var r = 0; r < m.rows; r++){
+            for(var c = 0 ; c < m.cols; c++){
+                retM.setEle(r,c, this.getEle(r,c) - m.getEle(r,c) )
             }
         }
         return retM;
