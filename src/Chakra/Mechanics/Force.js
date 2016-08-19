@@ -55,7 +55,7 @@ class ForceSystem{
             if(mainTorque == null){
                 mainTorque = torque;
             }else{
-                mainTorque.add(torque);
+                mainTorque = mainTorque.add(torque);
             }
         }
         return {"F": this.mainMoment, 'T': mainTorque};

@@ -32,7 +32,7 @@ class Vector extends Matrix {
             throw "Vector can only add to another vector";
         }
 
-        return new Vector(super.sub(otherVec).data);
+        return new Vector(super.sub(otherVec));
     }
 
     getEle(idx) {

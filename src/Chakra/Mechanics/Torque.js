@@ -6,7 +6,7 @@ import {Force} from './Force.js';
 class Torque{
     constructor(){
         if(arguments.length==1 && arguments[0] instanceof Torque){
-            // This is only a place holder object.
+            // clone the torque
             this.torque = arguments[0].torque;
             return;
         }
@@ -37,7 +37,7 @@ class Torque{
     add(t){
         // Clone current torque.
         var retT = new Torque(t);
-        retT.torque.add(this.torque)
+        retT.torque = retT.torque.add(this.torque)
         return retT;
     }
 }
