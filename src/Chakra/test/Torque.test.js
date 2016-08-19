@@ -10,10 +10,5 @@ describe('Torque', function() {
         let p = new Vector(3);
         let t = new Torque(p,f);
         assert.equal(true, new Vector([6,-3,0]).equal(t.getTorque()));
-
-    })
-
-    describe('#add', function(){
-
     })
 })

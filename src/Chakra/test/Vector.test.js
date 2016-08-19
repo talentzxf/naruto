@@ -24,11 +24,9 @@ describe('Vector', function() {
         let v1 = new Vector([1,2,3,4,5]);
         let v2 = new Vector([6,7,8,9,10]);
         let v3 = v1.add(v2);
-        assert.equal(7, v3.getEle(0))
-        assert.equal(9, v3.getEle(1))
-        assert.equal(11, v3.getEle(2))
-        assert.equal(13, v3.getEle(3))
-        assert.equal(15, v3.getEle(4))
+        assert.equal(true, v3.equal(new Vector([7,9,11,13,15])));
+        assert.equal(true, v3.add(new Vector([1,1,1,1,1])).equal(new Vector([8,10,12,14,16])));
+
         assert.equal(130, v1.dot(v2))
 
         let v4 = new Vector([2,3,4]);

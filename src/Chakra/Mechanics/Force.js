@@ -1,5 +1,6 @@
 'use strict'
 import {Vector} from '../Algebra/Vector.js';
+import {Torque} from './Torque.js';
 // A force contains two factors
 // 1. A free vector indicates magnitude and direction of force
 // 2. Point of action
@@ -26,14 +27,23 @@ class Force{
 class ForceSystem{
     constructor(){
         this.forces = [];
+
+        // Main moment is actually the join force but is a free vector. Representing direction and magnitude of the join force.
         this.mainMoment = new Vector(3);
         for(var i = 0; i < arguments.length; i++){
-            this.forces.push(arguments[i]);
-            this.mainMoment.add()
+            this.addForce(arguments[i])
         }
     }
 
-    torqueSimplifyTo(p){
+    addForce(f){
+        if(!(f instanceof Force)){
+            throw "Only force can be added for force system!"
+        }
+        this.forces.push(f);
+        this.mainMoment = this.mainMoment.add(f.force);
+    }
+
+    simplifyTo(p){
         // p should be a 3d vector.
         if(!(p instanceof Vector ) && p.rows != 3){
             throw "P is not vector or dimension of p is not 3!";
@@ -48,9 +58,9 @@ class ForceSystem{
                 mainTorque.add(torque);
             }
         }
-        return mainTorque;
+        return {"F": this.mainMoment, 'T': mainTorque};
     }
 
 }
 
-export {Force}
+export {Force,ForceSystem}
