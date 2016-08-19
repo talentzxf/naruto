@@ -87,6 +87,10 @@ class Vector extends Matrix{
     norm(){
         return Math.sqrt(this.norm2())
     }
+
+    unit(){
+        return this.multi(1/this.norm())
+    }
 }
 
 export {Vector}

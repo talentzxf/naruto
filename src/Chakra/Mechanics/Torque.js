@@ -5,6 +5,12 @@ import {Force} from './Force.js';
 // F is the force
 class Torque{
     constructor(){
+        if(arguments.length==1 && arguments[0] instanceof Torque){
+            // This is only a place holder object.
+            this.torque = arguments[0].torque;
+            return;
+        }
+
         if(arguments.length != 2 ){
             throw "Need two arguments. p and F"
         }
@@ -18,14 +24,21 @@ class Torque{
         }
 
         // r = F.point - action point
-        this.r = arguments[1].point.sub( arguments[0] );
-        this.F = arguments[1].force;
+        let r = arguments[1].point.sub( arguments[0] );
+        let F = arguments[1].force;
 
-        this.torque = this.r.cross(this.F);
+        this.torque = r.cross(F);
     }
 
     getTorque(){
         return this.torque;
+    }
+
+    add(t){
+        // Clone current torque.
+        var retT = new Torque(t);
+        retT.torque.add(this.torque)
+        return retT;
     }
 }
 

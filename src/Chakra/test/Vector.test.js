@@ -48,5 +48,8 @@ describe('Vector', function() {
 
         let v7 = new Vector([3,4]);
         assert.equal(5,v7.norm())
+
+        let v8 = new Vector([1,1]);
+        console.log(v8.unit())
     })
 })
