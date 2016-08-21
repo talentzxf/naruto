@@ -31,14 +31,17 @@ class Matrix{
         }
     }
 
-    equal(other){
-        if(!(other instanceof Matrix)){
-            throw "Matrix can only compare to another Matrix";
-        }
+    validateDimensionMatch(m){
+        if(!m instanceof Matrix)
+            throw m + "is not a matrix!"
 
-        if( (this.rows != other.rows ) || (this.cols != other.cols)){
-            return false;
+        if(m.rows != this.rows || m.cols != this.cols){
+            throw "Matrix dimension didn't match!"
         }
+    }
+
+    equal(other){
+        this.validateDimensionMatch(other);
 
         for(var r = 0; r < this.rows; r++){
             for( var c = 0 ; c < this.cols; c++){
@@ -64,12 +67,7 @@ class Matrix{
      * @param m
      */
     add(m){
-        if(!m instanceof Matrix)
-            throw m + "is not a matrix!"
-
-        if(m.rows != this.rows || m.cols != this.cols){
-            throw "Matrix dimension didn't match!"
-        }
+        this.validateDimensionMatch(m);
 
         let retM = new Matrix(m.rows, m.cols);
         for(var r = 0; r < m.rows; r++){
@@ -80,13 +78,23 @@ class Matrix{
         return retM;
     }
 
-    sub(m){
-        if(!m instanceof Matrix)
-            throw m + "is not a matrix!"
+    /**
+     * Inplacement add
+     */
+    iadd(m){
+        this.validateDimensionMatch(m);
 
-        if(m.rows != this.rows || m.cols != this.cols){
-            throw "Matrix dimension didn't match!"
+        for(var r = 0; r < m.rows; r++){
+            for(var c = 0 ; c < m.cols; c++){
+                this.setEle(r,c, m.getEle(r,c) + this.getEle(r,c))
+            }
         }
+
+        return this;
+    }
+
+    sub(m){
+        this.validateDimensionMatch(m);
 
         let retM = new Matrix(m.rows, m.cols);
         for(var r = 0; r < m.rows; r++){
@@ -95,6 +103,20 @@ class Matrix{
             }
         }
         return retM;
+    }
+
+    /**
+     * Inplacement substract
+     */
+    isub(m){
+        this.validateDimensionMatch(m);
+
+        for(var r = 0; r < m.rows; r++){
+            for(var c = 0 ; c < m.cols; c++){
+                this.setEle(r,c, this.getEle(r,c) - m.getEle(r,c) )
+            }
+        }
+        return this;
     }
 
     /**
@@ -109,6 +131,17 @@ class Matrix{
             }
         }
         return retM;
+    }
+
+    iT(){
+        for(var r = 0; r < this.rows; r++){
+            for(var c = 0 ; c < this.cols; c++){
+                var tmp = this.getEle(r,c);
+                this.setEle(r,c, this.getEle(c,r));
+                this.setEle(c,r, tmp);
+            }
+        }
+        return this;
     }
 
     /**
