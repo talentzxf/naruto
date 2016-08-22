@@ -40,6 +40,18 @@ describe('Vector', function() {
         assert.equal(0, v5.dot(v6));
     })
 
+    describe("#inplace_operations", function(){
+        let v1 = new Vector([1,2,3,4,5,6,7,8,9]);
+        let v2 = new Vector([9,2,3,5,20,3,30,40,10]);
+
+        v1.iadd(v2);
+
+        assert.equal(true, v1.equal(new Vector([10,4,6,9,25,9,37,48,19])));
+
+        v1.isub(v2);
+        assert.equal(true, v1.equal(new Vector([1,2,3,4,5,6,7,8,9])))
+    })
+
     describe('norms', function(){
         let v4 = new Vector([2,3,4]);
         assert.equal(29, v4.norm2())

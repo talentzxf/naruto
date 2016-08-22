@@ -79,7 +79,7 @@ class Matrix{
     }
 
     /**
-     * Inplacement add
+     * Inplace add
      */
     iadd(m){
         this.validateDimensionMatch(m);
@@ -106,7 +106,7 @@ class Matrix{
     }
 
     /**
-     * Inplacement substract
+     * Inplace substract
      */
     isub(m){
         this.validateDimensionMatch(m);
@@ -133,6 +133,10 @@ class Matrix{
         return retM;
     }
 
+    /**
+     * Inplace transpose a matrix
+     * @returns {Matrix}
+     */
     iT(){
         for(var r = 0; r < this.rows; r++){
             for(var c = 0 ; c < this.cols; c++){

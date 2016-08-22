@@ -40,7 +40,7 @@ class ForceSystem{
             throw "Only force can be added for force system!"
         }
         this.forces.push(f);
-        this.mainMoment = this.mainMoment.add(f.force);
+        this.mainMoment.iadd(f.force);
     }
 
     simplifyTo(p){
