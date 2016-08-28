@@ -1,13 +1,14 @@
 import {Vector} from '../Algebra/Vector.js';
 import {Force} from './Force.js';
+import {Matrix} from '../Algebra/Matrix.js';
 // input should be r, F.
 // p is the action point.
 // F is the force
-class Torque{
+class Torque extends Vector{
     constructor(){
-        if(arguments.length==1 && arguments[0] instanceof Torque){
+        if(arguments.length==1 && ( arguments[0] instanceof Torque || arguments[0] instanceof Matrix) ){
             // clone the torque
-            this.torque = arguments[0].torque;
+            super(arguments[0]);
             return;
         }
 
@@ -25,20 +26,9 @@ class Torque{
 
         // r = F.point - action point
         let r = arguments[1].point.sub( arguments[0] );
-        let F = arguments[1].force;
+        let F = arguments[1];
 
-        this.torque = r.cross(F);
-    }
-
-    getTorque(){
-        return this.torque;
-    }
-
-    add(t){
-        // Clone current torque.
-        var retT = new Torque(t);
-        retT.torque = retT.torque.add(this.torque)
-        return retT;
+        super(r.cross(F));
     }
 }
 

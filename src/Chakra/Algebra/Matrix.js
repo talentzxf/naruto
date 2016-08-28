@@ -36,7 +36,7 @@ class Matrix{
             throw m + "is not a matrix!"
 
         if(m.rows != this.rows || m.cols != this.cols){
-            throw "Matrix dimension didn't match!"
+            throw "Matrix dimension didn't match! Left dimension:" + this.rows + " X "+ this.cols + " Right dimension:" + m.rows + " X " + m.cols;
         }
     }
 
