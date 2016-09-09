@@ -17,7 +17,7 @@ class Quaternion extends Vector{
 
     multi(m){
         if(m instanceof Quaternion){
-            
+
         }
     }
 }
