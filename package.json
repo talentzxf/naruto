@@ -25,6 +25,7 @@
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-copy": "^1.0.0",
     "grunt-mocha-test": "^0.12.7",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "n3d-threejs": "^76.0.0"
   }
 }
