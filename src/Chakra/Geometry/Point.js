@@ -9,4 +9,14 @@ class Point3d extends Vector{
     }
 }
 
-export {Point3d}
+class Point2d extends Vector{
+    constructor(){
+        if(arguments[0] instanceof Vector && arguments[0].rows == 2){
+            super(arguments[0])
+        }else{
+            throw "First argument is not vector or dimension not match!"
+        }
+    }
+}
+
+export {Point3d, Point2d}

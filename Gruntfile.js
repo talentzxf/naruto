@@ -9,7 +9,8 @@ module.exports = function (grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dst/ChakraTest.js': ['src/Chakra/**/*.js']
+                    'dst/ChakraTest.js': ['src/**/*.js'],
+                    'dst/static/game.js':['static/**/*.js']
                 },
                 options: {
                     transform: ["babelify"]
@@ -37,6 +38,11 @@ module.exports = function (grunt) {
                 expand: true,
                 src: "src/**/test.js",
                 dest: "dst/"
+            },
+            static: {
+                expand: true,
+                src: 'static/**/*.html',
+                dest: 'dst'
             }
         }
     });
@@ -47,7 +53,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-browserify');
 
 // Default task(s).
-    grunt.registerTask('default', ['clean', 'browserify', 'mochaTest']);
+    grunt.registerTask('default', ['clean', 'browserify', 'copy', 'mochaTest']);
 
 }
 ;
