@@ -6,9 +6,9 @@ class Line2d{
                 this.p1 = arguments[0];
                 this.p2 = arguments[1];
             }
+        } else {
+            throw "Argument wrong!"
         }
-
-        throw "Argument wrong!"
     }
 }
 
@@ -19,9 +19,9 @@ class Line3d{
                 this.p1 = arguments[0];
                 this.p2 = arguments[1];
             }
+        } else {
+            throw "Argument wrong!"
         }
-
-        throw "Argument wrong!"
     }
 }
 
