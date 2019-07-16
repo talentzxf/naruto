@@ -1,6 +1,7 @@
+import { World } from "../src/naruto.js"
 
 function initGame(){
-    game = new World();
+    var game = new World(500, 500);
     game.animate();
 }
 

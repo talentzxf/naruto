@@ -1,5 +1,4 @@
 var browserify = require('browserify')
-    , remapify = require('remapify')
 
 module.exports = function (grunt) {
 
@@ -10,7 +9,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'dst/ChakraTest.js': ['src/**/*.js'],
-                    'dst/static/game.js':['static/**/*.js']
+                    'dst/static/game.js':['static/**/*.js'],
+                    'dst/naruto.js':['src/naruto.js']
                 },
                 options: {
                     transform: ["babelify"]

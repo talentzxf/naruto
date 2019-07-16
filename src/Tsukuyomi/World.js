@@ -1,7 +1,7 @@
 var THREE = require("n3d-threejs")
 
 class World{
-    constructor(){
+    constructor(width, height){
         this.scene = new THREE.Scene()
         this.camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 10000)
 
@@ -32,7 +32,5 @@ class World{
         this.renderer.render(scene, camera)
     }
 }
-
-Object.assign()
 
 export {World}
