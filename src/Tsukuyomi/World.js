@@ -12,24 +12,25 @@ class World{
         var geometry = new THREE.BoxGeometry(1, 1, 1)
         var material = new THREE.MeshBasicMaterial({color: 0x00ff00})
         this.cube = new THREE.Mesh(geometry, material)
-        this.scene.add(cube)
+        this.scene.add(this.cube)
 
         this.camera.position.z = 5
+        this._this = this
     }
 
     animate(){
-        requestAnimationFrame(animate)
-        update()
-        render()
+        requestAnimationFrame(this.animate.bind(this))
+        this.update()
+        this.render()
     }
 
     update(){
-        this.cube.rotation.x += 0.1
-        this.cube.rotation.y += 0.1
+        this.cube.rotation.x += 0.01
+        this.cube.rotation.y += 0.01
     }
 
     render(){
-        this.renderer.render(scene, camera)
+        this.renderer.render(this.scene, this.camera)
     }
 }
 
