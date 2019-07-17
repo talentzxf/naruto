@@ -13,7 +13,7 @@ class World{
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setSize(width, height)
         document.body.appendChild(this.renderer.domElement)
-        this.camera.position.z = 5
+        this.camera.position.z = 50
 
         if(this.initScene == undefined){
             throw new TypeError("Please inherit initScene!")

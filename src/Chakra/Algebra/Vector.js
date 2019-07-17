@@ -95,6 +95,18 @@ class Vector extends Matrix {
     unit() {
         return this.multi(1 / this.norm())
     }
+
+    x(){
+        return this.getEle(0)
+    }
+
+    y(){
+        return this.getEle(1)
+    }
+
+    z(){
+        return this.getEle(2)
+    }
 }
 
 export {Vector}

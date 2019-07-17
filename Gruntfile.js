@@ -6,6 +6,12 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         browserify: {
+            options : {
+                browserifyOptions : {
+                    // keep in mind that paths are relative to Gruntfile.js
+                    paths: ["./src"]
+                }
+            },
             dist: {
                 files: {
                     'dst/ChakraTest.js': ['src/**/*.js'],

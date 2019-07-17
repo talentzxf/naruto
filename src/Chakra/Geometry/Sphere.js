@@ -1,4 +1,5 @@
 import {Point3d} from './Point.js'
+var THREE = require("n3d-threejs")
 
 class Sphere {
     constructor() {
