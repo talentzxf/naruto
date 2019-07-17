@@ -2,31 +2,35 @@ var THREE = require("n3d-threejs")
 
 class World{
     constructor(width, height){
+
+        if( this.constructor == World){
+            throw new TypeError("Class: World is abstract, can\'t be instantiated directly. Please inherit and implement all abstract functions.")
+        }
+
         this.scene = new THREE.Scene()
         this.camera = new THREE.PerspectiveCamera(45, width/height, 0.1, 10000)
 
         this.renderer = new THREE.WebGLRenderer()
         this.renderer.setSize(width, height)
         document.body.appendChild(this.renderer.domElement)
-
-        var geometry = new THREE.BoxGeometry(1, 1, 1)
-        var material = new THREE.MeshBasicMaterial({color: 0x00ff00})
-        this.cube = new THREE.Mesh(geometry, material)
-        this.scene.add(this.cube)
-
         this.camera.position.z = 5
-        this._this = this
+
+        if(this.initScene == undefined){
+            throw new TypeError("Please inherit initScene!")
+        } else {
+            this.initScene(this.scene)
+        }
     }
 
     animate(){
         requestAnimationFrame(this.animate.bind(this))
-        this.update()
-        this.render()
-    }
 
-    update(){
-        this.cube.rotation.x += 0.01
-        this.cube.rotation.y += 0.01
+        if(this.update == undefined){
+            console.log("Update not defined, Scene is static!")
+        }else {
+            this.update()
+        }
+        this.render()
     }
 
     render(){
