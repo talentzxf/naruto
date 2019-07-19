@@ -37,8 +37,12 @@ class ForceSystem{
     }
 
     addForce(f){
+        if(f instanceof Array){
+            f = new Force(new Vector(f))
+        }
+
         if(!(f instanceof Force)){
-            throw "Only force can be added for force system!"
+            throw "Only force can be added into force system!"
         }
         this.forces.push(f);
         this.mainMoment.iadd(f);

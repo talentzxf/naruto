@@ -19,7 +19,7 @@ class Vector extends Matrix {
 
     add(otherVec) {
         if (!(otherVec instanceof Vector)) {
-            throw "Vector can only add to another vector";
+            throw "Vector can only add another vector";
         }
 
         var retMatrix = super.add(otherVec);
@@ -29,10 +29,18 @@ class Vector extends Matrix {
 
     sub(otherVec) {
         if (!(otherVec instanceof Vector)) {
-            throw "Vector can only add to another vector";
+            throw "Vector can only sub another vector";
         }
 
         return new Vector(super.sub(otherVec));
+    }
+
+    multi(other) {
+        if (!(other instanceof Vector) && !(typeof other == "number")) {
+            throw "Vector can only multiply another vector";
+        }
+
+        return new Vector(super.multi(other));
     }
 
     getEle(idx) {
