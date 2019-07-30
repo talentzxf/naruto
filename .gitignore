@@ -1,6 +1,7 @@
 *.iml
 *.ipr
 *.iws
+*.bak
 node_modules/
 dst/
 .idea/
@@ -9,3 +10,4 @@ FluidPaper/*.pdf
 FluidPaper/*.aux
 FluidPaper/*.log
 FluidPaper/*.out
+FluidPaper/*.synctex.gz
