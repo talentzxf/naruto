@@ -28,9 +28,16 @@ class World{
         if(this.update == undefined){
             console.log("Update not defined, Scene is static!")
         }else {
-            this.update()
+            if(this.lastRenderTime != undefined){
+                var curTime = (new Date).getTime()
+                var dt = (curTime - this.lastRenderTime)/1000.0
+                this.update(dt)
+
+                console.log("FPS:" + 1/dt)
+            }
         }
         this.render()
+        this.lastRenderTime = (new Date).getTime()
     }
 
     render(){

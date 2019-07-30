@@ -1,4 +1,4 @@
-import {World,ThreeSphere,Point3d} from "../src/naruto.js"
+import {World,ThreeBall} from "../src/naruto.js"
 
 class BilliardWorld extends World {
     constructor(width, height) {
@@ -6,14 +6,19 @@ class BilliardWorld extends World {
     }
 
     initScene(scene) {
-        this.sphere = new ThreeSphere(scene, new Point3d([0,0,0]), 1 )
+        this.ball = new ThreeBall(scene, [-20,20,0], 1 )
+        this.ball.setSpeed([5.0,0,0])
+        this.ball.addForce([0,-9.8,0])
+
+
+        this.ball2 = new ThreeBall(scene, [20,20,0], 1 )
+        this.ball2.setSpeed([-10.0,0,0])
+        this.ball2.addForce([0,-9.8,0])
     }
 
-    update() {
-        this.sphere.getRotation().x += 0.01
-        this.sphere.getRotation().y += 0.01
-
-        this.sphere.getPosition().x = this.sphere.getPosition().x + 0.1 > 10?0:this.sphere.getPosition().x + 0.1
+    update(dt) {
+        this.ball.update(dt)
+        this.ball2.update(dt)
     }
 }
 
