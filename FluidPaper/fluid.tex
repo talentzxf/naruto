@@ -1,0 +1,34 @@
+\documentclass{article}
+\usepackage{ctex}  %加载包，因为我们在用中文写文档，所以必须加载这个包，否则不支持中文
+\usepackage{multicol}  %加载包
+\usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}  %加载包
+\usepackage{lscape}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\author{VincentZhang}  % 作者
+\date{2019.7.30}  %定义时间
+\title{流体力学}  %文档标题
+\begin{document}
+
+\maketitle
+前言，这篇文章是2007年Siggraph的课程文档(Course Note),从头到底很详细的讲解了怎么用计算机模拟流体(烟和水等等)。
+原文地址： \url{https://www.cs.ubc.ca/~rbridson/fluidsimulation/fluids_notes.pdf}
+
+\section{第一章 流体力学公式}
+流体力学中最重要的公式是Navier-Stokes公式:
+\begin{equation}
+\frac{\partial{\vec{u}}}{\partial{t}}+\vec{u}\cdot \nabla{\vec{u}}+\frac{1}{\rho}\nabla{p}=\vec{g}+\nu\nabla\cdot\nabla\vec{u} \label{momentumequation}
+\end{equation}
+\begin{equation}
+\nabla\cdot\vec{u}=0 \label{incompressibilitycondition}
+\end{equation}
+
+\subsection{符号含义}
+其中$\vec{u}$是流体的速度。\par
+$\rho$是流体的密度，大家都熟悉，如果是水的话，其值为$1000kg/m^3$. 如果是空气的话，其值为$1.3kg/m^3。$\par
+$p$是压力，流体对内对外的压力。\par
+$vec{g}$是大家都熟悉的重力加速度，一般性就是中学书上的值$(0,-9.81,0)m/s^2$。从这个向量表示也行，我们这里y轴像上。x-轴，y-轴是水平的。$\vec{g}$有时候大家也会叫他"体作用力"\par
+$\nu$是“静态粘度”。顾名思义，这个参数表达的是流体有多粘稠。像糖浆这样的流体这个值很高，像酒精这样的流体这个值很低。学术点说，这个参数反映了流体抗拒形变的程度。一个极端的例子是沥青，网上不是有个段子，有个科学家等了一辈子想看一颗沥青掉下来的过程，最后到死都没有实现。另一个更加极端的例子是玻璃，玻璃其实也是一种流体，有很多几百年老教堂的玻璃窗，下面比上面厚，这就是流体流动的结果，但是大家懂的，要观察玻璃滴下来，估计这个老教授要等到宇宙尽头了。
+\subsection{动量方程}
+Navier-Stokes里的第一条方程\ref{momentumequation}，其实是一条向量方程，另有一个名字叫做"动量方程"，所以看这条方程的时候，千万要注意变量上面的箭头。其实这个方程就是变形的牛二方程$\vec{F}=m\vec{a}$。这个方程告诉了我们流体在各种作用力之下是怎么运动的。显然这条方程比较复杂，这一节将把这个方程拆开一项项给大家讲解。后一章节，我们将介绍\ref{incompressibilitycondition}，这个方程叫做“不可压缩条件”
+
+\end{document}
