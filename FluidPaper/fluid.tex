@@ -120,4 +120,29 @@ $$
 i.e. \frac{\partial{q}}{\partial{t}}+\nabla{q}\cdot\vec{u}=0
 \end{aligned}
 \end{equation}
+
+\subsection{一个例子}
+写一堆公式都不如直接来个例子让人好理解，所以我们这里先举个温度的例子。因为这个具体的例子是用的温度这个物理量，所以这里不用q而用T。假设这个温度场是这样的：
+\begin{equation}
+T(x)=10x
+\end{equation}
+也就是说，越在右边，温度越高，左边温度低。在坐标原点，温度为零，在图的右边$x=100$的地方，温度为100。假设有一个稳定的速度为c的风向右吹，这样的话，流速的分布是这样的：
+\begin{equation}
+\vec{u}=c
+\end{equation}
+为简单起见，假设空气中每个粒子本身的温度不发生变化，只是移动。就像上章说过的，这种情况下，用拉格朗日视角看，随体导数为零。
+\begin{equation}
+\frac{DT}{Dt}=0
+\end{equation}
+展开可以得到：
+\begin{equation}
+\begin{aligned}
+\frac{\partial{T}}{\partial{t}}+\nabla{T}\cdot\vec{u}=0 \\
+\frac{\partial{T}}{\partial{t}}+10\cdot{c}=0 \\
+\Rightarrow \frac{\partial{T}}{\partial{t}}=-10c \label{example}
+\end{aligned} 
+\end{equation}
+从式\ref{example}可以看到，在空间中一个固定点，温度的变化率是-10c。如果风速降低到c=0，那么整个流体都不发生任何变化。如果向右吹的速度c=1，在固定点的温度变化率为-10度每秒。如果风吹的更大一点c=20，那么在每个固定点的温度变化率为-20度每秒。可以看到即使拉格朗日视角下，温度变化为零，欧拉视角下温度仍然在流体速度的作用下不断变化。
+\subsection{对流向量}
+
 \end{document}
