@@ -30,7 +30,7 @@ $p$是压力，流体对内对外的压力。\par
 $vec{g}$是大家都熟悉的重力加速度，一般性就是中学书上的值$(0,-9.81,0)m/s^2$。从这个向量表示也行，我们这里y轴像上。x-轴，y-轴是水平的。$\vec{g}$有时候大家也会叫他"体作用力"\par
 $\nu$是“静态粘度”。顾名思义，这个参数表达的是流体有多粘稠。像糖浆这样的流体这个值很高，像酒精这样的流体这个值很低。学术点说，这个参数反映了流体抗拒形变的程度。一个极端的例子是沥青，网上不是有个段子，有个科学家等了一辈子想看一颗沥青掉下来的过程，最后到死都没有实现。另一个更加极端的例子是玻璃，玻璃其实也是一种流体，有很多几百年老教堂的玻璃窗，下面比上面厚，这就是流体流动的结果，但是大家懂的，要观察玻璃滴下来，估计这个老教授要等到宇宙尽头了。
 \subsection{动量方程}
-Navier-Stokes里的第一条方程\ref{momentumequation}，其实是一条向量方程，另有一个名字叫做"动量方程"，所以看这条方程的时候，千万要注意变量上面的箭头。其实这个方程就是变形的牛二方程$\vec{F}=m\vec{a}$。这个方程告诉了我们流体在各种作用力之下是怎么运动的。显然这条方程比较复杂，这一节将把这个方程拆开一项项给大家讲解。后一章节，我们将介绍\ref{incompressibilitycondition}，这个方程叫做“不可压缩条件”。\par
+Navier-Stokes里的第一条方程(\ref{momentumequation})，其实是一条向量方程，另有一个名字叫做"动量方程"，所以看这条方程的时候，千万要注意变量上面的箭头。其实这个方程就是变形的牛二方程$\vec{F}=m\vec{a}$。这个方程告诉了我们流体在各种作用力之下是怎么运动的。显然这条方程比较复杂，这一节将把这个方程拆开一项项给大家讲解。后一章节，我们将介绍(\ref{incompressibilitycondition})，这个方程叫做“不可压缩条件”。\par
 现在先假设我们用粒子系统去模拟流体(实际上后面的章节有讲怎么具体去模拟，这里作此假设只是进行理论推导方便)。每一个粒子，都可以被理解为一个小小的"分子团",这个“分子团”的质量为m，体积为V(这点很重要，注意我们不是用单个分子去模拟粒子，而是一个小小的分子团！),速度为$\vec{u}$。 根据牛二定理，只要我们知道了这个“分子团”上面的所有的力，根据$\vec{F}=m\vec{a}$我们就能知道这个“分子团”的加速度了。其中加速度，我们用这种奇怪的方式定义：\begin{equation}
 \vec{a}\equiv\frac{D\vec{u}}{Dt}
 \end{equation}
@@ -72,11 +72,11 @@ $$
 \end{matrix}
 \right]
 $$
-从\ref{laplacian}可以很明显看出，拉普拉斯算子衡量的是一个点的数值偏离周围点数值平均值的程度。在图像处理上，主要用来做边缘检测。
+从(\ref{laplacian})可以很明显看出，拉普拉斯算子衡量的是一个点的数值偏离周围点数值平均值的程度。在图像处理上，主要用来做边缘检测。
 }
 }
 
-在式\ref{momentumequation_1st}的两边除以$\rho$，得到下式:
+在式(\ref{momentumequation_1st})的两边除以$\rho$，得到下式:
 \begin{equation}
 \frac{D\vec{u}}{Dt}=\vec{g}-\frac{1}{\rho}\nabla{p}+\frac{\nu}{\rho}\nabla\cdot\nabla\vec{u}
 \end{equation}
@@ -113,7 +113,7 @@ $$
                 +w\frac{\partial{q}}{\partial{z}} \label{materialderivative}
 \end{equation}
 显然在2D空间中，上式最后一项$w\frac{\partial{q}}{\partial{z}}$为零，可以去掉。\par
-式\ref{materialderivative}表示的某个物理量随着"分子团"在速度场中$\vec{u}$中运动的情况，这种运动叫做对流。如果某个物理量，它在拉格朗日视角下没有任何变化(比如假设外界温度不变的情况下，温度在空气中随着风而传播的过程)，那么我们可以得到对流方程：
+式(\ref{materialderivative})表示的某个物理量随着"分子团"在速度场中$\vec{u}$中运动的情况，这种运动叫做对流。如果某个物理量，它在拉格朗日视角下没有任何变化(比如假设外界温度不变的情况下，温度在空气中随着风而传播的过程)，那么我们可以得到对流方程：
 \begin{equation}
 \begin{aligned}
 \frac{Dq}{Dt}\equiv{0} \\
@@ -142,7 +142,19 @@ T(x)=10x
 \Rightarrow \frac{\partial{T}}{\partial{t}}=-10c \label{example}
 \end{aligned} 
 \end{equation}
-从式\ref{example}可以看到，在空间中一个固定点，温度的变化率是-10c。如果风速降低到c=0，那么整个流体都不发生任何变化。如果向右吹的速度c=1，在固定点的温度变化率为-10度每秒。如果风吹的更大一点c=20，那么在每个固定点的温度变化率为-20度每秒。可以看到即使拉格朗日视角下，温度变化为零，欧拉视角下温度仍然在流体速度的作用下不断变化。
+从式(\ref{example})可以看到，在空间中一个固定点，温度的变化率是-10c。如果风速降低到c=0，那么整个流体都不发生任何变化。如果向右吹的速度c=1，在固定点的温度变化率为-10度每秒。如果风吹的更大一点c=20，那么在每个固定点的温度变化率为-20度每秒。可以看到即使拉格朗日视角下，温度变化为零，欧拉视角下温度仍然在流体速度的作用下不断变化。
 \subsection{对流向量}
-
+初学者经常困惑的一点是在向量的情况下，随体导数的意义，例如颜色RGB的随体导数，或者更明确的说，速度向量场$\vec{u}$的随体导数是什么含义。最简单的答案：把每个分量单独处理。让我们把颜色向量$\vec{C}=(R,G,B)$，那么其随体导数为：
+\begin{equation}
+\frac{D\vec{C}}{Dt}=\begin{bmatrix}
+    DR/Dt \\ 
+    DG/Dt \\ 
+    DB/Dt 
+\end{bmatrix}=\begin{bmatrix}
+\partial{R}/\partial{t}+\vec{u}\cdot\nabla{R} \\
+\partial{G}/\partial{t}+\vec{u}\cdot\nabla{G} \\
+\partial{B}/\partial{t}+\vec{u}\cdot\nabla{B}
+\end{bmatrix}=\frac{\partial{\vec{C}}}{\partial{t}}+\vec{u}\cdot\nabla\vec{C} \label{advect_vector}
+\end{equation}
+式(\ref{advect_vector})的最后部分其实数学上不正确，因为$\vec{u}$是向量,
 \end{document}
