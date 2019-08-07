@@ -1,3 +1,5 @@
+import {CollisionDetector} from "/Rikudo/Collision/CollisionDetector";
+
 var THREE = require("n3d-threejs")
 
 class World{
@@ -20,6 +22,8 @@ class World{
         } else {
             this.initScene(this.scene)
         }
+
+        this.collisionDetector = new CollisionDetector()
     }
 
     animate(){
@@ -31,9 +35,8 @@ class World{
             if(this.lastRenderTime != undefined){
                 var curTime = (new Date).getTime()
                 var dt = (curTime - this.lastRenderTime)/1000.0
+                this.collisionDetector.update(dt)
                 this.update(dt)
-
-                console.log("FPS:" + 1/dt)
             }
         }
         this.render()

@@ -1,5 +1,5 @@
 \documentclass{article}
-\usepackage{ctex}  %加载包，因为我们在用中文写文档，所以必须加载这个包，否则不支持中文
+\usepackage[UTF8]{ctex}  %加载包，因为我们在用中文写文档，所以必须加载这个包，否则不支持中文
 \usepackage{multicol}  %加载包
 \usepackage[top=1in, bottom=1in, left=1.25in, right=1.25in]{geometry}  %加载包
 \usepackage{lscape}
@@ -156,5 +156,17 @@ T(x)=10x
 \partial{B}/\partial{t}+\vec{u}\cdot\nabla{B}
 \end{bmatrix}=\frac{\partial{\vec{C}}}{\partial{t}}+\vec{u}\cdot\nabla\vec{C} \label{advect_vector}
 \end{equation}
-式(\ref{advect_vector})的最后部分其实数学上不正确，因为$\vec{u}$是向量,
+接下来，我们都速度进行一下同样的操作，基本上没什么大区别，就把上两次出现的$\vec{C}$用$\vec{u}$来代替就行了。用$\vec{u}=(u,v,w)$带入，得到:
+\begin{equation}
+\frac{D\vec{u}}{Dt}=\begin{bmatrix}
+Du/Dt \\
+Dv/Dt \\
+Dw/Dt
+\end{bmatrix}=\begin{bmatrix}
+\partial{u}/\partial{t} + \vec{u}\cdot\nabla{u} \\
+\partial{v}/\partial{t} + \vec{u}\cdot\nabla{v} \\
+\partial{w}/\partial{t} + \vec{u}\cdot\nabla{w}
+\end{bmatrix}=\frac{\partial{\vec{u}}}{\partial{t}}+\vec{u}\cdot\nabla{\vec{u}}
+\end{equation}
+
 \end{document}
