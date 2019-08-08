@@ -140,16 +140,16 @@ T(x)=10x
 \frac{\partial{T}}{\partial{t}}+\nabla{T}\cdot\vec{u}=0 \\
 \frac{\partial{T}}{\partial{t}}+10\cdot{c}=0 \\
 \Rightarrow \frac{\partial{T}}{\partial{t}}=-10c \label{example}
-\end{aligned} 
+\end{aligned}
 \end{equation}
 从式(\ref{example})可以看到，在空间中一个固定点，温度的变化率是-10c。如果风速降低到c=0，那么整个流体都不发生任何变化。如果向右吹的速度c=1，在固定点的温度变化率为-10度每秒。如果风吹的更大一点c=20，那么在每个固定点的温度变化率为-20度每秒。可以看到即使拉格朗日视角下，温度变化为零，欧拉视角下温度仍然在流体速度的作用下不断变化。
 \subsection{对流向量}
 初学者经常困惑的一点是在向量的情况下，随体导数的意义，例如颜色RGB的随体导数，或者更明确的说，速度向量场$\vec{u}$的随体导数是什么含义。最简单的答案：把每个分量单独处理。让我们把颜色向量$\vec{C}=(R,G,B)$，那么其随体导数为：
 \begin{equation}
 \frac{D\vec{C}}{Dt}=\begin{bmatrix}
-    DR/Dt \\ 
-    DG/Dt \\ 
-    DB/Dt 
+    DR/Dt \\
+    DG/Dt \\
+    DB/Dt
 \end{bmatrix}=\begin{bmatrix}
 \partial{R}/\partial{t}+\vec{u}\cdot\nabla{R} \\
 \partial{G}/\partial{t}+\vec{u}\cdot\nabla{G} \\
@@ -168,5 +168,34 @@ Dw/Dt
 \partial{w}/\partial{t} + \vec{u}\cdot\nabla{w}
 \end{bmatrix}=\frac{\partial{\vec{u}}}{\partial{t}}+\vec{u}\cdot\nabla{\vec{u}}
 \end{equation}
+当然，我们可以进一步展开右边的梯度项得到下式：
+\begin{equation}
+\frac{D\vec{u}}{Dt}=\begin{bmatrix}
+\frac{\partial{u}}{\partial{t}} + u\frac{\partial{u}}{\partial{x}} + v\frac{\partial{u}}{\partial{y}} + w\frac{\partial{u}}{\partial{z}} \\
+\frac{\partial{v}}{\partial{t}} + u\frac{\partial{v}}{\partial{x}} + v\frac{\partial{v}}{\partial{y}} + w\frac{\partial{v}}{\partial{z}} \\
+\frac{\partial{w}}{\partial{t}} + u\frac{\partial{w}}{\partial{x}} + v\frac{\partial{w}}{\partial{y}} + w\frac{\partial{w}}{\partial{z}}
+\end{bmatrix}
+\end{equation}
+
+\subsection{不可压缩性}
+真正的流体体积都多多少少会发生变化。实际上，声波就是因为流体体积的变化而产生的。有些书上可能会说气体的体积可压缩而液体的体积不可压缩，但实际上这个说法是不精确的，两者的体积都可能发生变化，否则在水下就不可能听到声音了。\par
+然而，液体体积的变化确实不会很大。即使是气体，如果不用泵的话或者不是在声爆等极端情况下，体积的变化也不会特别大。流体在这些体积可压缩情况下的行为是非常复杂难以模拟的，除了声波这个例子，其他情况也基本不会在正常生活中出现。即使是声波，流体的体积变化也很小，对于动画模拟来说基本可以忽略不计。所以，最后结论，如果我们做流体模拟的动画的话，为了简化期间，我们还是认为液体是不可压缩的。\par
+那么数学上，流体是不可压缩是什么意思呢？就是指的流体的体积不可变。在某个时间点，选取任意流体团，如果其体积为$\Omega$，表面积为$\partial{\Omega}$。在数学上，我们可以通过对流体的速度在法向量方向的积分来衡量体积的变化：
+\begin{equation}
+\frac{d}{dt}Volume(\Omega)=\int\int_{\partial{\Omega}}{\vec{u}\cdot{\hat{n}}} \label{volume}
+\end{equation}
+既然我们考虑的是不可压缩流体，那么显然式(\ref{volume})的结果应该是零，也就是说:
+\begin{equation}
+\int\int_{\partial{\Omega}}{\vec{u}\cdot{\hat{n}}}=0 \label{volumezero}
+\end{equation}
+如果处理这个积分呢？我们需要散度定理把这个面积分转化为体积分，我们会得到：
+\begin{equation}
+\int\int\int_{\Omega}\nabla\cdot\vec{u}=0
+\end{equation}
+接下来是见证奇迹的时刻，上面对流体团$\Omega$的选择是任意的，也就是说，不管是对整个太平洋的水，还是对一汤勺的水，还是对肉眼看不见的浮游生物血管内壁的一个细胞内部的一个细胞器里面的一点点水，都成立。如果是这样，那么我们可以看出只有一种情况会让上面的式子始终为零，那就是积分符号里面的函数是零，也就是说，在流体内的任意地方：
+\begin{equation}
+\nabla\cdot\vec{u}=0 \label{incompressiblecondition}
+\end{equation}
+如果回头看Navier-Stokes公式,其第二条正是式(\ref{incompressiblecondition})
 
 \end{document}
