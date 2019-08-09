@@ -256,5 +256,55 @@ p两边的[]代表这是个跳变，在液体内部压力依然符合之前的�
 \section{第二章 数值模拟综述}
 上一章一通推公式，可是计算机又看不懂公式，怎么做呢？当然需要用计算机去离散化处理流体。
 \subsection{拆分}
+为了数值求解复杂微分方程，一个比较常见的做法是拆分，也就是说把微分方程的各个项分开分别处理。如果某个物理量的变化率是多个项之和，那我们可以数值更新每一项，然后把他们加起来。
+\par 这里举个非常简单的例子，看一下拆分是怎么工作的。假设有如下常微分方程：
+\begin{equation}
+\frac{dq}{dt}=1+2
+\end{equation}
+这个方程当然有很简单的解析解:$q(t)=3t+q(0)$，但我们研究下怎么用数值的方式来解这个方程。让我们把这个方程拆成两步，基本上就是简单的前向欧拉法:
+\begin{equation}
+\begin{aligned}
+\tilde{q}=q^n+1\Delta{t} \\
+q^{n+1}=\tilde{q}+2\Delta{t}
+\end{aligned}
+\end{equation}
+其中$q^n$是第n步时候得到的值，$\Delta{t}$是两步之间的时间差。$\tilde{q}$计算第n步的时候的中间变量，只更新了第一项，没有更新第二项。这个例子当然非常的简单，这么做似乎没有任何意义，但是如果微分方程很复杂的话，那么这么做就很有意义了。接下来，让我们看一个稍微复杂点的例子：
+\begin{equation}
+\frac{dq}{dt}=f(q)+g(q)
+\end{equation}
+\par 其中f()和g()是关于q的黑盒函数。我们这样子把他拆成前向欧拉方法：
+\begin{equation}
+\begin{aligned}
+\tilde{q}=q^n+\Delta{t}f(q^n) \\
+q^{n+1}=\tilde{q}+\Delta{t}g(\tilde{q})
+\end{aligned}
+\end{equation}
+这个例子里面，显然这么分两步走好像也没有任何意义。那么让我们在看下下面的例子：
+\begin{equation}
+\begin{aligned}
+\frac{dr}{dt}=f(r) \\
+\frac{ds}{dt}=g(s)
+\end{aligned}
+\end{equation}
+假设我们用上面的方法去处理，假设$F(\Delta{t},r)$和$G(\Delta{t},s)$是对上述两个函数更新的方法，那么有如下的前向更新的方法:
+\begin{equation}
+\begin{aligned}
+\tilde{q}=F(\Delta{t},q^n) \\
+q^{n+1}=G(\Delta{t},\tilde{q})
+\end{aligned}
+\end{equation}
+大部分复杂微分方程都没有办法求解出解析解，全局求数值解往往也很难，这种情况下拆分开来求解往往更为合理。
+\subsection{拆分流体方程}
+\par
+接下来我们可以拆分不可压缩条件下的流体方程了。具体的，我们将把流体方程分为对流部分，物体力(重力)部分，和压力/不可压缩条件部分这三部分。
+\begin{equation}
+\begin{aligned}
+\frac{Dq}{Dt}=0    &&(\mbox{对流项})\\
+\frac{\partial{\vec{u}}}{\partial{t}}=\vec{g} &&(\mbox{物体力})\\
+\frac{\partial{\vec{u}}}{\partial{t}}+\frac{1}{\rho}\nabla{p}=0\quad \mbox{s.t.}\quad \nabla\cdot\vec{u}=0 &&(\mbox{压力项})
+\end{aligned}
+\end{equation}
+\par
+注意到在对流项部分，我们没有写速度$\vec{u}$而是用了q表示，这主要是想覆盖所有满足对流条件的物理量(即，用拉格朗日视角追随某个粒子，这个物理量不变，比如温度等等)。
 
 \end{document}
