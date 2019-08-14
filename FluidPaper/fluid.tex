@@ -5,6 +5,8 @@
 \usepackage{lscape}
 \usepackage[colorlinks,linkcolor=blue]{hyperref}
 \usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{pgfplots}
 \author{VincentZhang}  % 作者
 \date{2019.7.30}  %定义时间
 \title{流体力学}  %文档标题
@@ -57,7 +59,7 @@ m\frac{D\vec{u}}{Dt}=m\vec{g}-V\nabla{p}+V\nu\nabla\cdot\nabla\vec{u}
 \fbox{
 \parbox{\textwidth}{
 简单解释下拉普拉斯算子$\nabla\cdot\nabla$，详细的解释请参见多维微积分教材 \\
-拉普拉斯算子，记作$\nabla\cdot\nabla$、$\nabla^2$ 或者$\Delta$，为梯度的散度。顾名思义，他的含义是先对函数f(一般至少是二维函数)做梯度$\nabla{f}$,再对这个梯度函数做散度$\nabla\cdot\nabla{f}$。\\
+拉普拉斯算子，记作$\nabla\cdot\nabla$、$\nabla^2$ 或者$\Delta$，为梯度的散度。顾名思义，他的含义是先对函数f(一般至少是二维函数)做梯度$\nabla{f}$, 再对这个梯度函数做散度$\nabla\cdot\nabla{f}$。\\
 这么说还是很抽象，我们来考虑下二维离散的图片，在某一点的拉普拉斯算子(四联通)可以这样定义：
 \begin{equation}
 \nabla\cdot\nabla{f}=[f(x+1,y)+f(x-1，y）+f(x,y+1)+f(x,y-1)]-4f(x,y) \label{laplacian}
@@ -328,6 +330,26 @@ q^{n+1}=G(\Delta{t},\tilde{q})
 \par
 然而，在有些情况下，由于我们有性能上的要求，因此每帧不能选太小的步长。比如，如果每帧只能模拟三次，那我们要确保$\Delta{t}$至多是帧时长的1/3.
 \subsection{网格}
-
+迄今为止，我们只讨论了时间上怎么离散化，这一节我们将在空间上做离散化。后续的章节会对这个问题做更进一步的讨论，我们将先介绍下基本的网格结构。\par
+在计算流体力学的早期发展阶段，Harlow和Welch介绍了一种很好的空间网格结构MAC网格(Marker-and-Cell)去高效的求解不可压缩流体问题。\par
+MAC网格是一个“交错”的网格,也就是说，不同的变量被存在不同的位置。让我们先看看二维的例子。网格(i,j)的压力在网格的中心取样，记作$p_{i,j}$。 速度按照笛卡尔坐标系的方向被拆成两部分。水平分量$u$在垂直网格面的中心被采样，例如$u_{i+1/2,j}$指的是在网格(i,j)和(i,j+1)中间点的速度。同样的垂直分量$v$是在水平网格的中心被采样，例如$v(i,j+1/2)$指的是网格(i,j)和(i,j+1)中间点的速度。注意到对任意网格(i,j)，每个面中心的法向速度都被采样到了，这样做的好处在于，我们将很容易估计通过这个面流进流出这个网格的流量。
+\par
+考虑三维的情况，MAC网格也是用类似的方法构建的，网格中心点处存储
+\begin{tikzpicture}
+\begin{axis}
+\addplot[color=red]{exp(x)};
+\end{axis}
+\end{tikzpicture}
+%Here ends the furst plot
+\hskip 5pt
+%Here begins the 3d plot
+\begin{tikzpicture}
+\begin{axis}
+\addplot3[
+    surf,
+]
+{exp(-x^2-y^2)*x};
+\end{axis}
+\end{tikzpicture}
 
 \end{document}
