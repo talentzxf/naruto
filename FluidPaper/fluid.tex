@@ -5,7 +5,7 @@
 \usepackage{lscape}
 \usepackage[colorlinks,linkcolor=blue]{hyperref}
 \usepackage{amsmath}
-\usepackage{tikz}
+\usepackage{tikz,tikz-3dplot}
 \usepackage{pgfplots}
 \author{VincentZhang}  % 作者
 \date{2019.7.30}  %定义时间
@@ -357,4 +357,39 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 
 
 考虑三维的情况，MAC网格也是用类似的方法构建的，网格中心点处存储
+\par
+
+\tdplotsetmaincoords{-20}{0}
+\begin{tikzpicture}[z=-1cm,thick,grid/.style={very thin,gray},tdplot_main_coords]
+\tdplotsetrotatedcoords{0}{-20}{0}
+
+\draw[->,tdplot_rotated_coords,color=black] (0,0,0) -- (7,0,0);
+\draw[tdplot_rotated_coords] (7,0,0) node[anchor=south] [black]{x};
+\draw[->,tdplot_rotated_coords,color=black] (0,0,0) -- (0,7,0);
+\draw[tdplot_rotated_coords] (0,7,0) node[anchor=south] [black]{y};
+\draw[->,tdplot_rotated_coords,color=black] (0,0,0) -- (0,0,7);
+\draw[tdplot_rotated_coords] (0,0,7) node[anchor=south] [black]{z};
+% back of the cube
+\draw[tdplot_rotated_coords,color=black] (2.5,3,0) -- (8.5,3,0);
+\draw[tdplot_rotated_coords,color=black] (3,2.5,0) -- (3,8.5,0);
+\draw[tdplot_rotated_coords,color=black] (2.5,8,0) -- (8.5,8,0);
+\draw[tdplot_rotated_coords,color=black] (8,8.5,0) -- (8,2.5,0);
+
+%top of the cube
+
+\draw[tdplot_rotated_coords,color=black] (3,8,-0.5) -- (3,8,5.5);
+\draw[tdplot_rotated_coords,color=black] (8,8,-0.5) -- (8,8,5.5);
+\draw[tdplot_rotated_coords,color=black] (2.5,8,5) -- (8.5,8,5);
+
+% front of the cube
+\draw[tdplot_rotated_coords,color=black] (3,8.5,5) -- (3,2.5,5);
+\draw[tdplot_rotated_coords,color=black] (8,8.5,5) -- (8,2.5,5);
+\draw[tdplot_rotated_coords,color=black] (2.5,3,5) -- (8.5,3,5);
+
+% two side lines
+\draw[tdplot_rotated_coords,color=black] (3,3,5.5) -- (3,3,-0.5);
+\draw[tdplot_rotated_coords,color=black] (8,3,5.5) -- (8,3,-0.5);
+\end{tikzpicture}
+
+
 \end{document}
