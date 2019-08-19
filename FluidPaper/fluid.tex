@@ -338,15 +338,17 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 \begin{tikzpicture}[scale=2]
 \draw [->] (0.7,0.7) -- (3,0.7);
 \draw [->] (0.7,0.7) -- (0.7,3);
-\draw[step=1cm] (1.01,1.01) grid (3.99,3.99);
-\filldraw [black] (1.5,2.5) circle (1pt);
-\draw[step=1cm] (1.5,2) grid (3.99,3.99);
-\filldraw [black] (2,2.5) circle (1pt);
-\draw [->] (2,2.5) -- (2.2,2.5);
-\filldraw [black] (2.5,2.5) circle (1pt);
+\draw[step=2cm] (2.1,1.51) grid (5.99,5.99);
+\filldraw [black] (1.51,3.75) circle (1pt);
+\filldraw [black] (2.25,3.75) circle (1pt);
+\draw [->] (2.25,3.75) -- (2.75,3.75);
+\draw (2.25,3.75) node[anchor=north west] [black]{$u_{i-1/2,j}$};
+\filldraw [black] (3,3.75) circle (1pt);
 \draw (2.5,2.5) node[anchor=south] [black]{$p_{i,j}$};
-\filldraw [black] (3,2.5) circle (1pt);
-\filldraw [black] (3.5,2.5) circle (1pt);
+\filldraw [black] (3.75,3.75) circle (1pt);
+\draw [->] (3,2.5) -- (3.2,2.5);
+\draw (3,2.5) node[anchor=north west] [black]{$u_{i+1/2,j}$};
+\filldraw [black] (4.5,3.75) circle (1pt);
 \draw (3.5,2.5) node[anchor=south] [black]{$p_{i+1,j}$};
 
 \filldraw [black] (2.5,1.5) circle (1pt);
