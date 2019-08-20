@@ -358,7 +358,7 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 \end{tikzpicture}
 
 
-考虑三维的情况，MAC网格也是用类似的方法构建的，网格中心点处存储
+考虑三维的情况，MAC网格也是用类似的方法构建的，网格中心点处存储压力值，每个面的中心点处存储速度在这个方向上的分量。
 \par
 
 \tdplotsetmaincoords{-20}{0}
@@ -392,6 +392,20 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 \draw[tdplot_rotated_coords,color=black] (3,3,5.5) -- (3,3,-0.5);
 \draw[tdplot_rotated_coords,color=black] (8,3,5.5) -- (8,3,-0.5);
 \end{tikzpicture}
+\par
+至于为什么我们要用这么绕的方式做网格将会在第四章详细说，简单来说主要的作用是让网格的“中心差异”更为精确，今儿使得压力梯度和速度场的散度更为精确，从而避免这种方法的缺点。考虑一个1d的例子：估算一个量q在格子$...q_{i-1},q_i,q_{i+1}...$在格子i处的微分值$\partial{q}/\partial{x}$。直接从微分的定义出发的话，很自然能想到：
+\begin{equation}
+(\frac{\partial{q}}{\partial{x}})_i\approx \frac{q_{i+1}-q_{i-1}}{2\Delta x}  \label{differential_grid}
+\end{equation}
+用泰勒展开能够看出来，这种方法的精度能达到$O(\Delta x^2)$级别，而如果用普通的欧拉前向或者后向来算，比如这个方式:
+\begin{equation}
+(\frac{\partial{q}}{\partial{x}})_i\approx \frac{q_{i+1}-q_{i}}{\Delta x}  \label{euler_grid}
+\end{equation}
+其精度只能达到$O(\Delta x)$级别。但是式(\ref{differential_grid})有一个最大的问题是计算的物理量在格子i,但是这个式子完全忽略了$q_i$！这是非常糟糕的一件事情，假设我们要算一个常量函数的微分值(结果一秒钟就能看出来，就是零)。如果我们用式(\ref{differential_grid})去对原函数做约束，那么q的值未必一定是个常数，即使${q_i}$的值和$q_{i-1}$和$q_{i+1}$的差异非常大，结果可能仍然是0，只要保证$q_{i-1}=q{i+1}$就行了。比如这个函数值为$q_i=(-1)^i$，显然这个函数是个非常“坑坑洼洼”的函数，但是其按照式\{differential_grid}得到的微分值依然为0，这显然是一件非常错误的事情。另一方面，式(\ref{euler_grid})反而能够精确的保证只有常函数微分值才为零函数。这个问题叫做"非正常零值空间"问题：这个名字真是绕，谁想出来的。。。   其实这个问题本身很简单，就是描述式(\ref{differential_grid}的零函数不一定是常函数而已。
+\par
+那么我们应该怎么既保持二阶精度$O(\Delta x^2)$,又解决这个"非正常零值空间"问题呢？答案是用上面讲的交错网格的方式:在格子的边或者面上对物理量q做采样$q_{i+1/2}$。那么很自然的微分值就变成了:
+\begin{equation}
 
-
+\end{equation}
+\end{equation}
 \end{document}
