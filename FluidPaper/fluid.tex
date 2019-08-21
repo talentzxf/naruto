@@ -422,6 +422,30 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 -----补充三维公式-----
 
 \section{第三章 对流算法}
-在前面的章节里面，我们看到
-
+在前面的章节里面，我们看到流体模拟的很重要一步是数值求解对流方程：
+\begin{equation}
+Dq/Dt=0
+\end{equation}
+我们会把这一步骤封装成一个函数
+\begin{equation}
+q^{n+1}=advect(\vec{u},\Delta{t},q^n)
+\end{equation}
+$\vec{u}$是速度场(利用MAC网格做离散化),$\Delta{t}$是时间步长,$q^n$是在时刻n的时候某个物理量q的值，类似的$q^{n+1}$是在n+1时刻这个物理量q在这个速度场中的值。
+\par
+我们当然可以用暴力求解的方法去解出$Dq/Dt$，在一维的情况下，将这个微分方程展开得到：
+\begin{equation}
+\frac{\partial{q}}{\partial{t}}+u\frac{\partial{q}}{\partial{x}}=0
+\end{equation}
+然后我们可以用差分来代替微分。例如，如果用前向欧拉方法的话，可以得到下面的式子：
+\begin{equation}
+\frac{q_i^{n+1}-q_i^n}{\Delta{t}}+u^n_i\frac{q^n_{i+1}-q^n_{i-1}}{2\Delta{x}}
+\end{equation}
+为了解出$q_{n+1}$，整理一下上式，得到：
+\begin{equation}
+q_i^{n+1}=q_i^{n}-\Delta{t}u^n_i\frac{q^n_{i+1}-q^n_{n-1}}{2\Delta{x}}
+\end{equation}
+\par
+看起来挺美好的，但是如果按照这个方法去做数值模拟的话，将会是个灾难。
+\par
+首先，前向欧拉方法是不稳定的，也就是说，随便你的$\Delta{t}$取多小，迟早会爆炸(也就是说q的值迟早会变成无穷大)。(背后的数值分析不想在这里介绍，反正我们等会儿会给出一个稳定的方法)
 \end{document}
