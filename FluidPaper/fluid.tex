@@ -508,7 +508,7 @@ u_{max}=max(|u^n|)+\Delta{t}|g|   \label{umax}
 \end{equation}
 将式(\ref{umax})带入(\ref{timestamp})，在进行整理可以得到:
 \begin{equation}
-u_{max}=max(|u^n|)+\sqrt{5\Delta{x} g}
+u_{max}=max(|u^n|)+\sqrt{5\Delta{x} g}   \label{umax_5times}
 \end{equation}
 这个方法的好处在于，结果始终是正的，因此式(\ref{timestamp})就不可能出现除以零的问题。
 \subsubsection{CFL条件}
@@ -516,9 +516,28 @@ u_{max}=max(|u^n|)+\sqrt{5\Delta{x} g}
 \par
 CFL条件，是由三位应用数学家R.Courant, K.Fredrichs和H.Lewy共同命名的。它是一个很简单而且很直观的数值模拟收敛的必要条件。这里面收敛的意思是，如果你用越来越小，极限为零的$\delta{t}$和$\delta{x}$去做模拟，那么数值解将无限趋向于精确解。
 \par
-与时间相关的偏微分方程，例如对流方程，在某个特定空间点$\vec{x}^\star$z在某个特定的时间$t^\star$取决于一些或者全部的初始条件。也就是说有可能，有些初始条件即使改变了，也不会改变在$\vec{x}^\star$处，$t^\star$时刻这个解的值。然而，如果你改变了其他初始条件，这个值会发生变化。在一个常速度对流方程中，$q(\vec{x}^\star,t^\star)$就是$q(\vec{x}^\star-t^\star \vec{u},0)$，因此这个值仅取决于初始条件中的一个点的值。对其他微分方程，比如热传导方程$\partial{q}/\partial{t}=\nabla\cdot\nabla{q}$
-each point of the solution
-depends on all points in the initial conditions. The “domain of dependence” for a point is the set of points that have
-an effect on the value of the solution at that point.
+与时间相关的偏微分方程，例如对流方程，在某个特定空间点$\vec{x}^\star$z在某个特定的时间$t^\star$取决于一些或者全部的初始条件。也就是说有可能，有些初始条件即使改变了，也不会改变在$\vec{x}^\star$处，$t^\star$时刻这个解的值。然而，如果你改变了其他初始条件，这个值会发生变化。在一个常速度对流方程中，$q(\vec{x}^\star,t^\star)$就是$q(\vec{x}^\star-t^\star \vec{u},0)$，因此这个值仅取决于初始条件中的一个点的值。对其他微分方程，比如热传导方程$\partial{q}/\partial{t}=\nabla\cdot\nabla{q}$，每个点在任意时刻的解都取决于初始条件。基于上述讨论，我们可以定义某一个点的“依赖域”为对这个点有影响的那些点的集合。
+\par
+上面的讨论是针对真实情况的，每个点都有一个依赖域。对数值求解也一样，在数值求解不断迭代的过程中，每个点也有个依赖域：也就是那些对某点数值解有影响的初始条件点。显然，在$\delta{t}$和$\delta{x}$无限趋近于零的情况下，如果要得到正确的解，“数值依赖域”必须包含“真实依赖域”。这就是CFL条件：收敛只可能在如下条件满足的情况下才有可能，即如果$\Delta{x}\to{0}$且$\Delta{t}\to{0}$，则数值解的依赖域包含真实解的依赖域。
+\par
+对于半拉格朗日方法，CFL条件是自动满足的：在极限情况下，粒子的轨迹将无限接近于其真实轨迹，因此我们可以从正确的网格中插值得到正确的依赖域。因此，在半拉格朗日的情况下去讨论CFL条件实际上没什么意义，因为根本不需要，已经自动满足了。
+\par
+也就是说，对于求解对流方程的标准的显式有限差分算法，网格点$q_i^{n+1}$是从相邻网格点的旧值计算出来的。也就是说，只有对那些离开了原来的点$C\Delta{x}$距离的点，CFL条件才是有意义的，其中，C是一个较小的整数。尤其是，真正的求解实在速度场$|\vec{u}|$中，因此，数值求解的信息是有传输性的，也就是说$C\Delta{x}/\Delta{t}$，必须至少跟速度一样快，这样我们就得到了：
+\begin{equation}
+\frac{C\Delta{x}}{\Delta{t}}\ge{|\vec{u}|}
+\end{equation}
+变形一下就得到了：
+\begin{equation}
+\Delta{t}\le{\frac{C\Delta{x}}{|\vec{u}|}}  \label{CFL_last}
+\end{equation}
+
+现在是最为让人困惑的地方，上面的式子，如果C足够小的话，常常跟能让数值求解稳定的最大步长差不多。(当然也常常会有例外：比如我们这一章节介绍的第一个方法不管时间步长多小都是不稳定的，也有可能我们能够设计出一个不管时间步长多大都稳定但是除非CFL条件满足，否则结果是错误的方法)。因为这两者常常一样，因此人们经常会误解以为CFL跟稳定性的要求是一回事情，但实际上两者毫无关系。甚至有人认为只要满足\ref{CFL_last}，不管用什么数值模拟方法，稳定性都能满足。这显然是错误的。这里你可以看出来我们之前讨论的不等式(\ref{umax_5times})，其值是CFL条件的五倍--因此不管怎样，都很不合理。
+\par
+因此，现在你知道了。不要瞎用CFL条件这个词语，你实际上说的是稳定条件或者精确度条件而不是CFL条件。
+\subsection{耗散}
+Notice that in the interpolation step of semi-Lagrangian advection we are taking a weighted average of values from
+the previous time step. That is, with each advection step, we are doing an averaging operation. Averaging tends to
+smooth out sharp features, a process called “dissipation”. A lot of the rest of these notes is in fact about methods
+that try to avoid this dissipation: it can be fairly catastrophic in some cases!
 
 \end{document}
