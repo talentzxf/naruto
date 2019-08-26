@@ -514,8 +514,11 @@ u_{max}=max(|u^n|)+\sqrt{5\Delta{x} g}
 \subsubsection{CFL条件}
 离开讨论对流的时间步长之前，我忍不住想要澄清一下一个我经常被人抱怨的问题。"CFL"条件可以说是在基于物理模拟里面最最常被误用和误解的术语。因此，这里我打算详细的解释一下。如果你对数值模拟的分析没什么兴趣，那么这部分可以完全跳过。
 \par
-The CFL condition, named for applied mathematicians R. Courant, K. Friedrichs and H. Lewy, is a simple and very
-intuitive necessary condition for convergence.2 Convergence means that if you repeat a simulation with smaller and
-smaller ∆t and ∆x, in the limit going to zero, then your numerical solutions approch the exact solution.3
+CFL条件，是由三位应用数学家R.Courant, K.Fredrichs和H.Lewy共同命名的。它是一个很简单而且很直观的数值模拟收敛的必要条件。这里面收敛的意思是，如果你用越来越小，极限为零的$\delta{t}$和$\delta{x}$去做模拟，那么数值解将无限趋向于精确解。
+\par
+与时间相关的偏微分方程，例如对流方程，在某个特定空间点$\vec{x}^\star$z在某个特定的时间$t^\star$取决于一些或者全部的初始条件。也就是说有可能，有些初始条件即使改变了，也不会改变在$\vec{x}^\star$处，$t^\star$时刻这个解的值。然而，如果你改变了其他初始条件，这个值会发生变化。在一个常速度对流方程中，$q(\vec{x}^\star,t^\star)$就是$q(\vec{x}^\star-t^\star \vec{u},0)$，因此这个值仅取决于初始条件中的一个点的值。对其他微分方程，比如热传导方程$\partial{q}/\partial{t}=\nabla\cdot\nabla{q}$
+each point of the solution
+depends on all points in the initial conditions. The “domain of dependence” for a point is the set of points that have
+an effect on the value of the solution at that point.
 
 \end{document}
