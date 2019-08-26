@@ -535,9 +535,9 @@ CFL条件，是由三位应用数学家R.Courant, K.Fredrichs和H.Lewy共同命�
 \par
 因此，现在你知道了。不要瞎用CFL条件这个词语，你实际上说的是稳定条件或者精确度条件而不是CFL条件。
 \subsection{耗散}
-Notice that in the interpolation step of semi-Lagrangian advection we are taking a weighted average of values from
-the previous time step. That is, with each advection step, we are doing an averaging operation. Averaging tends to
-smooth out sharp features, a process called “dissipation”. A lot of the rest of these notes is in fact about methods
-that try to avoid this dissipation: it can be fairly catastrophic in some cases!
+注意到，在半拉格朗日方法求解对流方程的时候，我们是取前一个时刻物理量的加权平均来做插值的。也就是说，在每一个对流步，我们做的是平均这个操作。而平均操作的趋势是把起伏很大的特征抹平，这个步骤被称为"耗散"。接下来的很大部分内容就主要介绍避免这种“耗散”的方法：有些情况下“耗散”是非常灾难性的。
+\par
+让我们试着用更加物理的方式去理解这个平滑的现象。我们将用一种更加聪明的技术，成为"变种微分方程"。一般来说我们看待求解微分方程中的数值误差就是我们的计算结果是真实结果叠加上一部分错误得到的。另一种我们这里的看待这个问题的方法，有时候被称为"反向误差分析"，则是我们认为我们求解过程没有问题，只是题目本身跟真实情况有所偏差。用这种在原问题上加偏差的方法去理解并分析这个误差，这种方法是非常非常有用的。
+
 
 \end{document}
