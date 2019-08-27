@@ -556,6 +556,15 @@ q_i^{n+1}=q_i^n-\Delta{t}u\frac{q^n_i-q^n_{i-1}}{\Delta{x}} \label{q_n+1}
 q^n_{i-1}=q_i^n-\left (\frac{\partial{q}}{\partial{x}}\right)^n_i\Delta{x}+\left(\frac{\partial^2{q}}{\partial{x}^2}\right)^n_i\frac{\Delta{x}^2}{2}+O(\Delta{x}^3) \label{taylorseries}
 \end{equation}
 将式(\ref{taylorseries})带入(\ref{q_n+1}得到：
-
-
+\begin{equation}
+\begin{aligned}
+q_i^{n+1}&=q_i^n-\Delta{t}u\frac{1}{\Delta{x}}\left(\left(\frac{\partial{q}}{\partial{x}}\right)^n_i\Delta{x}-\left(\frac{\partial^2{q}}{\partial{x}^2}\right)^n_i\frac{\Delta{x}^2}{2}+O(\Delta{x^3})\right) \\
+&=q_i^n-\Delta{t}u\left(\frac{\partial{q}}{\partial{x}}\right)^n_i+\Delta{t}u\Delta{x}\left(\frac{\partial^2{q}}{\partial{x}^2}\right)^n_i+O(\Delta{x}^2) \\
+\end{aligned}
+\end{equation}
+这样子精确到二阶误差的情况下，这就是前向欧拉法求解变形微分方程的公式:
+\begin{equation}
+\frac{\partial{q}}{\partial{t}}+u\frac{\partial{q}}{\partial{x}}=u\Delta{x}\frac{\partial^2{q}}{\partial{x}^2}
+\end{equation}
+这看起来很像对流方程加一个年度为$u\Delta{x}$的粘性项！也就是说，当我们用半拉格朗日方法去求解无粘度对流方程的时候，我们的结果看起来反而有点像模拟有粘度流体！这种现象叫做"数字发散"或者叫做"数字扩散"
 \end{document}
