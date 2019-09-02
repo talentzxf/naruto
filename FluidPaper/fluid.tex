@@ -354,7 +354,7 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 \filldraw [black] (2.5,1.5) circle (1pt);
 \filldraw [black] (2.5,2) circle (1pt);
 \filldraw [black] (2.5,3) circle (1pt);
-\filldraw [black] (2.5,3.5) circle (1pt);
+\filldraw [black] (2.5,3.5) circle (1pt); \label{fig:mac_grid_2d}
 \end{tikzpicture}
 
 
@@ -589,5 +589,19 @@ $project$这个方法会从中间速度场$\vec{u}$中减去压力梯度:
 \vec{u}^{n+1}\cdot{\hat{n}}=\vec{u}_{solid}\cdot{\hat{n}}
 \end{equation}
 这样，我们要做的第一件事情是将这个压力更新离散化：也就是说，我们要解决在MAC网格上，我们怎么估算压力梯度这个问题。然后我们将研究怎么在MAC网格上定义离散化散度。将两者结合起来，我们就能得到一系列线性方程组，求解之，可以得到压力值。我们这里将详细描述一下这个系统和求解这个系统的高效算法。我们将首先研究怎么将传统的MAC网格应用到矩形边界之上，因为处理倾斜和弯曲的边界实际上并不容易。在本章结束的时候，我们会重新解释压力方程，那样子我们就能得到一个简单但是精确、稳定的处理不规则边界条件的方法。
+\subsection{离散压力梯度}
+就像我们之前简单讨论过的一样，MAC网格的存在原因，是其通过交错的方式，让中心差分变得更为鲁棒。比如，在我们想要从速度u的x分量减掉压力的梯度$\partial/\partial{x}$的地方，有两个在速度u的两个分量两边排列的很完美的压力值等着被差分。可以参考图(\ref{fig:mac_grid_2d})研究下这是怎么工作的。
+\par
+不多bb，这里是2维情况下压力更新的公式，利用中心差分的形式去估算$\partial{p}/\partial{x}$和$\partial{p}/\partial{y}$:
+\begin{equation}
+\begin{aligned}
+u_{i+1/2,j}^{n+1}&=u_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j}-p_{i,j}}{\Delta{x}} \\
+v_{i,j+1/2}^{n+1}&=v_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1}-p_{i,j}}{\Delta{x}} \\
+\end{aligned}
+\end{equation}
+
+在三维情况下，显然加上$\partial{p}/\partial{z}$就行了：
+
+
 
 \end{document}
