@@ -596,12 +596,27 @@ $project$这个方法会从中间速度场$\vec{u}$中减去压力梯度:
 \begin{equation}
 \begin{aligned}
 u_{i+1/2,j}^{n+1}&=u_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j}-p_{i,j}}{\Delta{x}} \\
-v_{i,j+1/2}^{n+1}&=v_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1}-p_{i,j}}{\Delta{x}} \\
+v_{i,j+1/2}^{n+1}&=v_{i,j+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1}-p_{i,j}}{\Delta{x}} \\
 \end{aligned}
 \end{equation}
 
 在三维情况下，显然加上$\partial{p}/\partial{z}$就行了：
+\begin{equation}
+\begin{aligned}
+u_{i+1/2,j,k}^{n+1}&=u_{i+1/2,j,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j,k}-p_{i,j,k}}{\Delta{x}} \\
+v_{i,j+1/2,k}^{n+1}&=v_{i,j+1/2,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1,k}-p_{i,j,k}}{\Delta{x}} \\
+w_{i,j,k+1/2}^{n+1}&=w_{i,j,k+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k+1}-p_{i,j,k}}{\Delta{x}} \\
+\end{aligned}
+\end{equation}
+注意到，这些压力更新要运用到任何内部含有流体的网格点的速度上面去。
+\par
+在之后的章节中，我们会研究如何计算内部含有流体的网格点的压力值。然而，上面的公式，及运用到了流体区域的边界，也运用到了流体的外部区域。所以我们需要指定我们的压力边界条件。我们将假定每个格子被分为流体格子(内部含有流体的各自)，固体格子(内部完全被固体占领的各自)，和空气格子(水面模拟的时候，内部啥都没有的格子)
 
-
+ Thus we need to specify our pressure boundary conditions. We will for now assume that grid cells
+can be simply classified as fluid cells (ones that contain fluid), solid cells (ones that are fully occupied by a solid),
+or air cells (ones that have nothing in them—as in free surface water simulations). We’ll postpone dealing with cells
+that are only partially filled with solid and/or fluid until the end of the chapter: for now, our solids must line up with
+the grid perfectly, and we ignore the exact mix of air and water in grid cells at the free surface and just label them as
+fluid cells.
 
 \end{document}
