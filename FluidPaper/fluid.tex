@@ -610,13 +610,15 @@ w_{i,j,k+1/2}^{n+1}&=w_{i,j,k+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k+1}-p_{i
 \end{equation}
 注意到，这些压力更新要运用到任何内部含有流体的网格点的速度上面去。
 \par
-在之后的章节中，我们会研究如何计算内部含有流体的网格点的压力值。然而，上面的公式，及运用到了流体区域的边界，也运用到了流体的外部区域。所以我们需要指定我们的压力边界条件。我们将假定每个格子被分为流体格子(内部含有流体的各自)，固体格子(内部完全被固体占领的各自)，和空气格子(水面模拟的时候，内部啥都没有的格子)
+在之后的章节中，我们会研究如何计算内部含有流体的网格点的压力值。然而，上面的公式，及运用到了流体区域的边界，也运用到了流体的外部区域。所以我们需要指定我们的压力边界条件。我们将假定每个格子被分为流体格子(内部含有流体的各自)，固体格子(内部完全被固体占领的各自)，和空气格子(水面模拟的时候，内部啥都没有的格子)。本章最后，我们才会去处理一半空(或者一半是固体)一半有水的格子：目前，我们假设固体跟格子是完美对齐的，并且忽略那些自由表面上的半水半空格子，直接把这些格子标记成流体格子。
+\par
+边界压力条件中比较容易处理的是自由边界(也就是流体随便流动的时候的表面部分)，比如水表面模拟。在这种情况下，我们可以简单假定流体之外的压力统统为零: 具体到公式中，我们可以简简单单将空气格子的$p_{i,j,k}$都设定为零。如果你对数学术语感兴趣的话，这种做法被称为"狄利克雷"边界条件。"狄利克雷"是一个数学家，这个术语的数学含义就是我们是直接指定边界上物理量的值的。
+\par
+边界压力条件中比较难的问题是怎么处理墙壁等固体。因为之前做过假定，固体墙壁是跟格子平行的，我们可以知道固体格子的速度各分量为：$\vec{u}^{n+1}\cdot{\hat{n}}=\vec{u}_{solid}\cdot\hat{n}$。这个其实就是压力的法向导数(数学上，这种边界条件被称为"诺伊曼"边界条件)。用这个公式代入压力更新公式，会得到一个组简单的线性方程组，其解为墙壁内部的压力值。例如，假设格子$(i,j)$是流体各自并且格子$(i+1,j)$是固体各自，那么我们可以这样更新$u_{i+1/2,j}$:
+\begin{equation}
+u^{n+1}_{i+1/2,j}=u
+\end{equation}
 
- Thus we need to specify our pressure boundary conditions. We will for now assume that grid cells
-can be simply classified as fluid cells (ones that contain fluid), solid cells (ones that are fully occupied by a solid),
-or air cells (ones that have nothing in them—as in free surface water simulations). We’ll postpone dealing with cells
-that are only partially filled with solid and/or fluid until the end of the chapter: for now, our solids must line up with
-the grid perfectly, and we ignore the exact mix of air and water in grid cells at the free surface and just label them as
-fluid cells.
+
 
 \end{document}
