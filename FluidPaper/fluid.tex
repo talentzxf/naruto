@@ -636,4 +636,17 @@ p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label
 \begin{equation}
 \nabla\cdot{\vec{u}}=\frac{\partial{u}}{\partial{x}}+\frac{\partial{v}}{\partial{y}}+\frac{\partial{w}}{\partial{z}}
 \end{equation}
+利用中间差分方法(重新看下MAC网格吧),我们可以这样估计二维情况下，流体格子(i,j)的散度:
+\begin{equation}
+(\nabla\cdot{\vec{u}})_{i,j}\approx{\frac{u_{i+1/2,j}-u_{i-1/2,j}}{\Delta{x}}+\frac{v_{i,j+1/2}-v_{i,j-1/2}}{\Delta{x}}}
+\end{equation}
+三维情况下，显然是：
+\begin{equation}
+(\nabla\cdot{\vec{u}})_{i,j,k}\approx{\frac{u_{i+1/2,j,k}-u_{i-1/2,j,k}}{\Delta{x}}+\frac{v_{i,j+1/2,k}-v_{i,j-1/2,k}}{\Delta{x}}+\frac{v_{i,j,k+1/2}-v_{i,j,k-1/2}}{\Delta{x}}}
+\end{equation}
+注意下，我们只会去计算标记为流体格子的散度。
+
+Another way of interpreting the discrete divergence we have defined here is through a direct estimate of the total rate
+of fluid entering or exiting the grid cell. Remember that this (in the exact continuum setting) is just the integral of
+the normal component of velocity around the faces of the grid cell:
 \end{document}
