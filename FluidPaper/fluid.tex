@@ -354,7 +354,7 @@ MAC网格是一个“交错”的网格,也就是说，不同的变量被存在�
 \filldraw [black] (2.5,1.5) circle (1pt);
 \filldraw [black] (2.5,2) circle (1pt);
 \filldraw [black] (2.5,3) circle (1pt);
-\filldraw [black] (2.5,3.5) circle (1pt);
+\filldraw [black] (2.5,3.5) circle (1pt); \label{fig:mac_grid_2d}
 \end{tikzpicture}
 
 
@@ -576,5 +576,79 @@ q_i^{n+1}&=q_i^n-\Delta{t}u\frac{1}{\Delta{x}}\left(\left(\frac{\partial{q}}{\pa
 \section{使流体不可压缩}
 这一章我们研究下怎么使得流体不可压缩并且模拟施加边界条件，也就是我们在第二章里面提到过的，如果实现算法$project(\Delta t,\vec{u})$。首先我们会讲述一下怎么用经典方法去解决这个问题，之后我们会讨论怎么用更精确的离散化方法去解决这个问题。
 \par
-$project$方法会从当前的速度场$$
+
+$project$这个方法会从中间速度场$\vec{u}$中减去压力梯度:
+\begin{equation}
+\vec{u}^{n+1}=\vec{u}-\Delta{t}\frac{1}{\rho}\nabla{p}
+\end{equation}
+这样，得到的结果就能够满足流体内部不可压缩这个条件了：
+\begin{equation}
+\nabla\cdot{\vec{u}^{n+1}}=0
+\end{equation}
+同时，还能满足固体边界条件:
+\begin{equation}
+\vec{u}^{n+1}\cdot{\hat{n}}=\vec{u}_{solid}\cdot{\hat{n}}
+\end{equation}
+这样，我们要做的第一件事情是将这个压力更新离散化：也就是说，我们要解决在MAC网格上，我们怎么估算压力梯度这个问题。然后我们将研究怎么在MAC网格上定义离散化散度。将两者结合起来，我们就能得到一系列线性方程组，求解之，可以得到压力值。我们这里将详细描述一下这个系统和求解这个系统的高效算法。我们将首先研究怎么将传统的MAC网格应用到矩形边界之上，因为处理倾斜和弯曲的边界实际上并不容易。在本章结束的时候，我们会重新解释压力方程，那样子我们就能得到一个简单但是精确、稳定的处理不规则边界条件的方法。
+\subsection{离散压力梯度}
+就像我们之前简单讨论过的一样，MAC网格的存在原因，是其通过交错的方式，让中心差分变得更为鲁棒。比如，在我们想要从速度u的x分量减掉压力的梯度$\partial/\partial{x}$的地方，有两个在速度u的两个分量两边排列的很完美的压力值等着被差分。可以参考图(\ref{fig:mac_grid_2d})研究下这是怎么工作的。
+\par
+不多bb，这里是2维情况下压力更新的公式，利用中心差分的形式去估算$\partial{p}/\partial{x}$和$\partial{p}/\partial{y}$:
+\begin{equation}
+\begin{aligned}
+u_{i+1/2,j}^{n+1}&=u_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j}-p_{i,j}}{\Delta{x}} \\
+v_{i,j+1/2}^{n+1}&=v_{i,j+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1}-p_{i,j}}{\Delta{x}} \\
+\end{aligned}
+\end{equation}
+
+在三维情况下，显然加上$\partial{p}/\partial{z}$就行了：
+\begin{equation}
+\begin{aligned}
+u_{i+1/2,j,k}^{n+1}&=u_{i+1/2,j,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j,k}-p_{i,j,k}}{\Delta{x}} \\
+v_{i,j+1/2,k}^{n+1}&=v_{i,j+1/2,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1,k}-p_{i,j,k}}{\Delta{x}} \\
+w_{i,j,k+1/2}^{n+1}&=w_{i,j,k+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k+1}-p_{i,j,k}}{\Delta{x}} \\
+\end{aligned}
+\end{equation}
+注意到，这些压力更新要运用到任何内部含有流体的网格点的速度上面去。
+\par
+在之后的章节中，我们会研究如何计算内部含有流体的网格点的压力值。然而，上面的公式，及运用到了流体区域的边界，也运用到了流体的外部区域。所以我们需要指定我们的压力边界条件。我们将假定每个格子被分为流体格子(内部含有流体的各自)，固体格子(内部完全被固体占领的各自)，和空气格子(水面模拟的时候，内部啥都没有的格子)。本章最后，我们才会去处理一半空(或者一半是固体)一半有水的格子：目前，我们假设固体跟格子是完美对齐的，并且忽略那些自由表面上的半水半空格子，直接把这些格子标记成流体格子。
+\par
+边界压力条件中比较容易处理的是自由边界(也就是流体随便流动的时候的表面部分)，比如水表面模拟。在这种情况下，我们可以简单假定流体之外的压力统统为零: 具体到公式中，我们可以简简单单将空气格子的$p_{i,j,k}$都设定为零。如果你对数学术语感兴趣的话，这种做法被称为"狄利克雷"边界条件。"狄利克雷"是一个数学家，这个术语的数学含义就是我们是直接指定边界上物理量的值的。
+\par
+边界压力条件中比较难的问题是怎么处理墙壁等固体。因为之前做过假定，固体墙壁是跟格子平行的，我们可以知道固体格子的速度各分量为：$\vec{u}^{n+1}\cdot{\hat{n}}=\vec{u}_{solid}\cdot\hat{n}$。这个其实就是压力的法向导数(数学上，这种边界条件被称为"诺伊曼"边界条件)。用这个公式代入压力更新公式，会得到一个组简单的线性方程组，其解为墙壁内部的压力值。例如，假设格子$(i,j)$是流体各自并且格子$(i+1,j)$是固体各自，那么我们可以这样更新$u_{i+1/2,j}$:
+\begin{equation}
+u^{n+1}_{i+1/2,j}=u_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j}-p_{i,j}}{\Delta{x}}
+\end{equation}
+我们知道，上式里面$u^{n+1}_{i+1/2,j}$实际上就是$u_{solid}$，重新整理下，得到：
+\begin{equation}
+p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label{solid_boundry_condition}
+\end{equation}
+嗯，看到那里，很多同学应该开始挠头，难道不是直接将$u^{n+1}_{i+1/2,j}$设成想要的值会比较简单吗？为什么要计算压力的差值呢？实际上，确实有很多流体模拟器是这样做的，先直接设置墙壁的速度，然后再去考虑计算压力值。但是，在本章的最后，我们将会看到，如果先计算压力差值，在流体连续的情况下，结果更未正确。而且，说白了我们也迟早需要计算流体内部压力的公式。
+\par
+另一件需要特别注意很奇怪的事情是关于边界条件的。我们需要单独计算固体格子每个边界面的压力。也就是说，如果这个固体格子有两个或者多个面跟液体格子接触，那么我们需要分别单独计算这个格子的压力值。听上去这挺奇怪的，请记住从根子上来说，从连续体的角度来说，压力并不是在固体内部定义的：我们在格子边界用压力梯度做运算。数值上说，将之表达为有限差分更为方便(如果满足所有其他方程的话)，但是实际上当我们讨论固体格子内部的压力的时候，我们只是做了些方便的数学想象。真正起作用的是边界上的压力差。所以我们实际上不会显式的存储固体格子内部的压力(因为可能有多个值)，当我们需要知道边界的压力差的时候，我们会利用式(\ref{solid_boundry_condition})去计算。
+\par
+边界条件真的是蛮复杂的--实际上在计算流体力学届，流传着这样一个传说：90%人的汗水、眼泪和鲜血都花费在如何将边界条件计算正确上面了。因此，画个精细的MAC网格，仔细观察不同类型的格子(固体格子，液体格子和空气格子)，然后把这一章慢慢再看一遍确保你确实明白了掌握了，还是很有必要的。
+\subsection{离散散度}
+现在来看看本章相对比较简单的部分!在连续体的例子里，我们希望我们的流体不可压缩，也就是$\nabla\cdot\vec{u}=0$。在格子上，我们用有限差分去模拟这个条件，去确保对每个流体格子,${\vec{u}_{n+1}}$散度为零。二维情况下，散度的表达式为：
+\begin{equation}
+\nabla\cdot{\vec{u}}=\frac{\partial{u}}{\partial{x}}+\frac{\partial{v}}{\partial{y}}
+\end{equation}
+三维情况下，则是：
+\begin{equation}
+\nabla\cdot{\vec{u}}=\frac{\partial{u}}{\partial{x}}+\frac{\partial{v}}{\partial{y}}+\frac{\partial{w}}{\partial{z}}
+\end{equation}
+利用中间差分方法(重新看下MAC网格吧),我们可以这样估计二维情况下，流体格子(i,j)的散度:
+\begin{equation}
+(\nabla\cdot{\vec{u}})_{i,j}\approx{\frac{u_{i+1/2,j}-u_{i-1/2,j}}{\Delta{x}}+\frac{v_{i,j+1/2}-v_{i,j-1/2}}{\Delta{x}}}
+\end{equation}
+三维情况下，显然是：
+\begin{equation}
+(\nabla\cdot{\vec{u}})_{i,j,k}\approx{\frac{u_{i+1/2,j,k}-u_{i-1/2,j,k}}{\Delta{x}}+\frac{v_{i,j+1/2,k}-v_{i,j-1/2,k}}{\Delta{x}}+\frac{v_{i,j,k+1/2}-v_{i,j,k-1/2}}{\Delta{x}}}
+\end{equation}
+注意下，我们只会去计算标记为流体格子的散度。
+
+Another way of interpreting the discrete divergence we have defined here is through a direct estimate of the total rate
+of fluid entering or exiting the grid cell. Remember that this (in the exact continuum setting) is just the integral of
+the normal component of velocity around the faces of the grid cell:
+
 \end{document}
