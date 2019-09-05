@@ -645,8 +645,14 @@ p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label
 (\nabla\cdot{\vec{u}})_{i,j,k}\approx{\frac{u_{i+1/2,j,k}-u_{i-1/2,j,k}}{\Delta{x}}+\frac{v_{i,j+1/2,k}-v_{i,j-1/2,k}}{\Delta{x}}+\frac{v_{i,j,k+1/2}-v_{i,j,k-1/2}}{\Delta{x}}}
 \end{equation}
 注意下，我们只会去计算标记为流体格子的散度。
+\par
+另一个表示我们这里定义的离散散度的方法是通过直接估计进入和流出这个格子流体的量来计算。这其实就是(如果是连续流体的话)速度的法向量在格子各个面上的积分值：
+\begin{equation}
+\int{\int_{\partial{cell}}}\vec{u}\cdot\hat{n}
+\end{equation}
+注意上面的积分是需要计算格子所有表面的。由于我们已经在所有面上都记录了速度在法向的分量了，我们可以简简单单通过这个法向速度乘以面积(但是需要注意一下符号，法向量都是指向格子外的，而速度则都是指向一个方向的，可以继续参考下MAC网格那个图)。在做了缩放以后，其实我们能得到同样的中间差分公式。如果你感兴趣，这个步骤可以自己推导一下。这个数值技巧，也就是说我们直接通过估计每个面上值的积分而不是用差分方程来估计散度的方法，被称为“有限体积”法。
+\par
+最后，我们还要注意一下，为什么MAC网格是特别有用的。如果我们用一个传统的"同构"网格，也就是那种把所有物理量包括速度全都记录在网格点上的方法，那么我们处理散度就会非常的麻烦。比如，如果用中心点差分公式：
 
-Another way of interpreting the discrete divergence we have defined here is through a direct estimate of the total rate
-of fluid entering or exiting the grid cell. Remember that this (in the exact continuum setting) is just the integral of
-the normal component of velocity around the faces of the grid cell:
+
 \end{document}
