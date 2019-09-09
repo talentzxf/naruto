@@ -681,4 +681,31 @@ p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label
 \Bigr]=0
 \end{autobreak}
 \end{align}
+对于3D的情况，其实就是加个分量，其他都是一样的，对于格子(i,j,k)。
+\begin{equation}
+\frac{u^{n+1}_{i+1/2,j,k}-u^{n+1}_{i-1/2,j,k}}{\Delta{x}}+\frac{v^{n+1}_{i,j+1/2,k}-v^{n+1}_{i,j-1/2,k}}{\Delta{x}}+
+\frac{w^{n+1}_{i,j,k+1/2}-w^{n+1}_{i,j,k-1/2}}{\Delta{x}}=0
+\end{equation}
+\begin{equation}
+\frac{\Delta t}{\rho}\left(\frac{4p_{i,j}-p_{i+1,j}-p_{i,j+1}-p_{i-1,j}-p_{i,j-1}}{\Delta{x^2}} \right)=-\left(\frac{u_{i+1/2,j}-u_{i-1/2,j}}{\Delta{x}}+\frac{v_{i,j+1/2}-v_{i,j-1/2}}{\Delta{x}}\right) \label{2d_poisson}
+\end{equation}
+同样，带入n时刻的u,v,w得到：
+\begin{align}
+\begin{autobreak}
+\frac{1}{\Delta x}\Bigl[
+\left(u_{i+1/2,j,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j,k}-p_{i,j,k}}{\Delta{x}}\right)-
+\left(u_{i-1/2,j,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k}-p_{i-1,j,k}}{\Delta{x}}\right)+
+\left(v_{i,j+1/2,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1,k}-p_{i,j,k}}{\Delta{x}}\right)-
+\left(v_{i,j-1/2,k}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k}-p_{i,j-1,k}}{\Delta{x}}\right)+
+\left(w_{i,j,k+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k+1}-p_{i,j,k}}{\Delta{x}}\right)-
+\left(w_{i,j,k-1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j,k}-p_{i,j,k-1}}{\Delta{x}}\right)
+\Bigr]=0
+\end{autobreak}
+\end{align}
+
+\begin{equation}
+\frac{\Delta t}{\rho}\left(\frac{6p_{i,j,k}-p_{i+1,j,k}-p_{i,j+1,k}-p_{i,j+1,k+1}-p_{i-1,j,k}-p_{i,j-1,k}--p_{i,j,k-1}}{\Delta{x^2}} \right)=-\left(\frac{u_{i+1/2,j,k}-u_{i-1/2,j,k}}{\Delta{x}}+\frac{v_{i,j+1/2,k}-v_{i,j-1/2,k}}{\Delta{x}}+
+\frac{w_{i,j,k+1/2}-w_{i,j,k-1/2}}{\Delta{x}}\right)  \label{3d_poisson}
+\end{equation}
+注意到，式$(\ref{2d_poisson})$和$(\ref{3d_poisson})$正是泊松方程$-\Delta{t}/\rho\nabla\cdot\nabla{p}=-\nabla\cdot{\vec{u}}$的数值解。
 \end{document}
