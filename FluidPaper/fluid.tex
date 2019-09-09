@@ -7,6 +7,8 @@
 \usepackage{amsmath}
 \usepackage{tikz,tikz-3dplot}
 \usepackage{pgfplots}
+\usepackage{autobreak}
+\allowdisplaybreaks
 \author{VincentZhang}  % 作者
 \date{2019.7.30}  %定义时间
 \title{流体力学}  %文档标题
@@ -662,4 +664,21 @@ p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label
 为了处理不可压缩条件，我们现在已经讲了两个重要部分：怎么用压力梯度去更新速度和怎么估计速度场的散度。
 \par
 如果还记的话，我们希望达到的目的是最终的速度场$\vec{u}^{n+1}$在流体内部无散度。为了找到合适的压力值从而达到这个条件，我们简单用压力更新方程去代替$\vec{u}^{n+1}$，2D的情况下是公式(\ref{2d_pressure_velocity_update})，3D的情况下是公式(\ref{3d_pressure_velocity_update})。用这种方法，我们能得到一个关于每个流体格子的线性方程组(记得我们只估算含有流体的格子的散度)，这时候压力值是不知道的。
+\par
+让我们在2D空间里，把这部分重写一下，对于某个网格(i,j)：
+\begin{equation}
+\frac{u^{n+1}_{i+1/2,j}-u^{n+1}_{i-1/2,j}}{\Delta{x}}+\frac{v^{n+1}_{i,j+1/2}-v^{n+1}_{i,j-1/2}}{\Delta{x}}=0
+\end{equation}
+用n时刻的u,v带入得到：
+
+\begin{align}
+\begin{autobreak}
+\frac{1}{\Delta x}\Bigl[
+\left(u_{i+1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i+1,j}-p_{i,j}}{\Delta{x}}\right)-
+\left(u_{i-1/2,j}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j}-p_{i-1,j}}{\Delta{x}}\right)+
+\left(v_{i,j+1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j+1}-p_{i,j}}{\Delta{x}}\right)-
+\left(v_{i,j-1/2}-\Delta{t}\frac{1}{\rho}\frac{p_{i,j}-p_{i,j-1}}{\Delta{x}}\right)
+\Bigr]=0
+\end{autobreak}
+\end{align}
 \end{document}
