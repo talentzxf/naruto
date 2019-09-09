@@ -708,4 +708,23 @@ p_{i+1,j}=p_{i,j}+\frac{\rho\Delta{x}}{\Delta{t}}(u_{i+1/2,j}-u_{solid})  \label
 \frac{w_{i,j,k+1/2}-w_{i,j,k-1/2}}{\Delta{x}}\right)  \label{3d_poisson}
 \end{equation}
 注意到，式$(\ref{2d_poisson})$和$(\ref{3d_poisson})$正是泊松方程$-\Delta{t}/\rho\nabla\cdot\nabla{p}=-\nabla\cdot{\vec{u}}$的数值解。
+\par
+如果一个流体格子正好在边界上，那么要计算其上的速度，必须考虑这个格子面上的压力是受边界条件影响的。比如，如果格子(i,j+1)是一个空气格子，那我们就在式$(\ref{2d_poisson})$中，将$p_{i,j+1}$设置为零。同理，如果各自(i+1,j)是一个固体格子，那么我们将$p_{i+1,j}$用边界条件根据式$(\ref{solid_boundry_condition})$算出来的结果带进去。假设(i-1,j)和(i,j-1)都是流体格子，那么上式就变成了：
+----------------补充原文式4.23和4.24
+\par
+通过上面的例子，我们可以观察到三件普遍成立的事情，同时根据这些事情，可以得到怎么用代码去实现。第一，对于空气格子，直接把那个压力从公式里面删掉就行了。第二，对于固体边界条件，我们将p去掉了，同时$p_{i,j}$前面的常数也变小了，通常这个数字是4,这么操作以后变成了3,减少了1。换句话说，$p_{i,j}$前面的参数跟这个格子周边有几个非固体各自的数目是相同的。(三维空间也是同样情况，这个格子周围有几个固体格子，这个参数就是几)。第三，我们用固体墙的速度$u_{solid}$而不是流体的速度$u_{i+1/2,j}$作为格子右边的速度来计算散度。总之，如果格子的任意一边靠在固体墙上，我们就用这一边的墙速度去估算散度。
+\subsection{用矩阵向量形式表示}
+对于所有的压力值，我们现在定义了一个很大的线性方程组。理论上，我们就可以将之视为一个很大的系数矩阵$A$乘以一个含有所有未知压力的向量$p$，等于一个含有所有流体格子散度的向量$d$(当然，需要做些修改，使之满足固体墙边界条件):
+\begin{equation}
+Ap=d
+\end{equation}
+当然在实现的过程中，$p$和$d$很有可能被存储在二维或者三维格子结构中而不是一个向量(因为每一项对应一个网格),如果不是所有的格子都是流体各自的话，他们也不一定在内存中是连续的。
+\par
+我们也未必需要将A直接存储为矩阵。
+We also needn’t store A directly as a matrix. Notice that each row of A corresponds to one equation, i.e. one fluid
+cell. For example, if grid cell (i, j, k) is fluid, then there will be a row of the matrix that we can label with the indices
+(i, j, k). The entries in that row are the coefficients of all the pressure unknowns in that equation: almost all of these
+are zero except possibly for the seven entries corresponding to pi,j,k and its six neighbours, pi±1,j,k, pi,j±1,k and
+pi,j,k±1. (In two dimensions there are at most four neighbours of course.) We only have nonzeros (i, j, k) and its
+fluid cell neighbours. It is of course pointless to store all the zeros: this is a “sparse” matrix.
 \end{document}
