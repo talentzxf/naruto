@@ -720,11 +720,18 @@ Ap=d
 \end{equation}
 当然在实现的过程中，$p$和$d$很有可能被存储在二维或者三维格子结构中而不是一个向量(因为每一项对应一个网格),如果不是所有的格子都是流体各自的话，他们也不一定在内存中是连续的。
 \par
-我们也未必需要将A直接存储为矩阵。
-We also needn’t store A directly as a matrix. Notice that each row of A corresponds to one equation, i.e. one fluid
-cell. For example, if grid cell (i, j, k) is fluid, then there will be a row of the matrix that we can label with the indices
-(i, j, k). The entries in that row are the coefficients of all the pressure unknowns in that equation: almost all of these
-are zero except possibly for the seven entries corresponding to pi,j,k and its six neighbours, pi±1,j,k, pi,j±1,k and
-pi,j,k±1. (In two dimensions there are at most four neighbours of course.) We only have nonzeros (i, j, k) and its
-fluid cell neighbours. It is of course pointless to store all the zeros: this is a “sparse” matrix.
+我们也未必需要将A直接存储为矩阵。注意到$A$的每一行对应的是一个方程，也就是说一个流体格子。例如，如果格子(i,j,k)是流体格子，那么在矩阵$A$中就会有一个下标为(i,j,k)的格子与他对应。那一行的系数则代表了所有未知压力的系数：其实这一行大部分都是零，只有$p_{i,j,k}$和其六个邻居节点$p_{i\pm{1},j,k}$,$p_{i,j\pm{1},k}$和$p_{i,j,k\pm{1}}$不是零。(二维空间当然就是四个邻居)。也就是说，非零的只有(i,j,k)和其流体格子邻居。存储所有剩下的零值当然是毫无意义的一件事情，这是一个"稀疏"矩阵。
+\par
+Let’s take a closer look at A. In the equation for (i, j, k), the coefficients for neighbouring fluid cells are all equal to
+−∆t/(ρ∆x
+2
+), and if there are ni,j,k fluid or air cell neighbours the coefficient for pi,j,k is ni,j,k∆t/(ρ∆x
+2
+). It’s a
+little inconvenient to keep that ∆t/(ρ∆x
+2
+) constant around, so we could optionally divide both sides of the equation
+by it. Then the modified matrix A would have off-diagonal entries either zero or −1, and diagonal entries ni,j,k.
+This is such a simple matrix, then, that you needn’t even store it at all! However, when we get to more advanced
+discretizations at the end of the chapter, A won’t be quite as simple so we’ll assume that you will store it.
 \end{document}
