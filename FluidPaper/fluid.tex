@@ -722,16 +722,11 @@ Ap=d
 \par
 我们也未必需要将A直接存储为矩阵。注意到$A$的每一行对应的是一个方程，也就是说一个流体格子。例如，如果格子(i,j,k)是流体格子，那么在矩阵$A$中就会有一个下标为(i,j,k)的格子与他对应。那一行的系数则代表了所有未知压力的系数：其实这一行大部分都是零，只有$p_{i,j,k}$和其六个邻居节点$p_{i\pm{1},j,k}$,$p_{i,j\pm{1},k}$和$p_{i,j,k\pm{1}}$不是零。(二维空间当然就是四个邻居)。也就是说，非零的只有(i,j,k)和其流体格子邻居。存储所有剩下的零值当然是毫无意义的一件事情，这是一个"稀疏"矩阵。
 \par
-Let’s take a closer look at A. In the equation for (i, j, k), the coefficients for neighbouring fluid cells are all equal to
-−∆t/(ρ∆x
-2
-), and if there are ni,j,k fluid or air cell neighbours the coefficient for pi,j,k is ni,j,k∆t/(ρ∆x
-2
-). It’s a
-little inconvenient to keep that ∆t/(ρ∆x
-2
-) constant around, so we could optionally divide both sides of the equation
-by it. Then the modified matrix A would have off-diagonal entries either zero or −1, and diagonal entries ni,j,k.
-This is such a simple matrix, then, that you needn’t even store it at all! However, when we get to more advanced
-discretizations at the end of the chapter, A won’t be quite as simple so we’ll assume that you will store it.
+让我们来仔细看一下A矩阵。对于$(i,j,k)$这个方程，其邻接的流体格子的系数都接近$-\Delta{t}/(\rho\Delta{x}^2)$，如果这个格子周边有$n_{i,j,k}$个流体或者空气格子，那么$p_{i,j,k}$的系数是$n_{i,j,k}\Delta{t}/(\rho\Delta{x}^2)$。因此，我们可以把$\Delta{t}/(\rho\Delta{x}^2)$设置为一个常数，而不是每次计算因为其值再一次模拟中是不变的。这样我们就能在方程两边都除以这个常数。这样我们就能使得整个矩阵A变成除对角线皆为0,-1的矩阵，而对角线为$n_{i,j,k}$。这个矩阵是如此之简单，以至于压根不需要存储！然而，等我们在本章结束的时候，我们会讨论一些更加高级的离散化方法，A矩阵会变得不那么简单因此这个矩阵还是应该会被记录下来。
+\par
+矩阵A的另一个很好的性质是它是对称的！例如对于矩阵中的某个项$A_{(i,j,k),(i+1,j,k)}$,也就是说这是压力$p_{i+1,j,k}$在格子$(i,j,k)$中的系数，一定跟$A_{i+1,j,k},{i,j,k}$相等。上面说过，这两项要么都是0，表明这两个格子里有一个是非流体格子，或者他们有一样的非零值。
+ This symmetry property will hold even with the more advanced
+discretization at the end of the chapter. Thus we only have to store half of the nonzero entries in A, since the other
+half are just copies!
+
 \end{document}
