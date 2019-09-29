@@ -17,6 +17,7 @@ vec2 img_multi(vec2 a, vec2 b){
 struct Sphere3{
 	vec3 c;  // Center 
 	float r;  // Radius
+    vec3 color; // Color of the sphere
 };
     
 struct Ray3{  // all points in the line x=p+dt where t>=0
@@ -66,7 +67,7 @@ struct intersect_result{
     
 intersect_result intersect_Sphere3_Ray3(Sphere3 s, Ray3 r){
     vec3 dSL = r.p - s.c;
-    vec3 eq = vec3(dot(r.d,r.d), 2.0*dot(r.d, dSL), dot(dSL, dSL));
+    vec3 eq = vec3(dot(r.d,r.d), -2.0*dot(r.d, dSL), dot(dSL, dSL)-s.r*s.r);
     
     quad_solution solution = solve_quad(eq);
     intersect_result res;
@@ -97,11 +98,28 @@ intersect_result intersect_Sphere3_Ray3(Sphere3 s, Ray3 r){
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord )
 {
-    // Normalized pixel coordinates (from 0 to 1)
+    float camera_width = 10.0;
+    float camera_z = 1.0;
     vec3 eye = vec3(0.0,0.0,0.0);
-    float z = 1.0;
-    Ray3 eye_ray;
-    eye_
- 
-    fragColor = vec4(0.0,0.0,0.0,1.0);
+    Sphere3 sphere = Sphere3(vec3(0.0,0.0,2.0), 1.6, vec3(1.0,1.0,0.0));
+    
+    // Normalized pixel coordinates (from 0 to 1)
+    float half_w_h_diff = (iResolution.x-iResolution.y)/2.0;
+    vec2 uv = vec2(fragCoord.x/iResolution.x, fragCoord.y/iResolution.x+half_w_h_diff/iResolution.x);
+    // Map to (-0.5,0.5)
+    uv = uv - 0.5;
+    
+    // Map view plane from uv coordinate to world coordinate.
+    vec3 camera_pos = vec3(uv*camera_width, camera_z);    
+    Ray3 eye_ray = Ray3(camera_pos, normalize(camera_pos - eye));
+    
+    intersect_result result = intersect_Sphere3_Ray3(sphere, eye_ray);
+    if(result.result > 0){
+        fragColor = vec4(sphere.color,1.0);
+    }
+    else{
+        fragColor = vec4(0.0,0.0,0.0,1.0);
+    }
+    
+    //fragColor=vec4(0.0,0.0,0.0,1.0);
 }
