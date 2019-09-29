@@ -102,6 +102,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     float camera_z = 1.0;
     vec3 eye = vec3(0.0,0.0,0.0);
     Sphere3 sphere = Sphere3(vec3(0.0,0.0,2.0), 1.6, vec3(1.0,1.0,0.0));
+    vec3 light_pos = vec3(0.0,1.0,0.0);
     
     // Normalized pixel coordinates (from 0 to 1)
     float half_w_h_diff = (iResolution.x-iResolution.y)/2.0;
@@ -115,7 +116,11 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
     
     intersect_result result = intersect_Sphere3_Ray3(sphere, eye_ray);
     if(result.result > 0){
-        fragColor = vec4(sphere.color,1.0);
+        vec3 hit_point = result.points[0];
+        vec3 light_hit_vec = hit_point - light_pos;
+        vec3 normal = hit_point - sphere.c;
+        float shade = dot(normalize(normal),normalize(+light_hit_vec));
+        fragColor = vec4(sphere.color*shade,1.0);
     }
     else{
         fragColor = vec4(0.0,0.0,0.0,1.0);
