@@ -17,4 +17,4 @@ gulp.task('browserify', function(){
 })
 
 
-gulp.task('default',['clean', 'browserify']);
+gulp.task('default',gulp.series('clean', 'browserify'));
